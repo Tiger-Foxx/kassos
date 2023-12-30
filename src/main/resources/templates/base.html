@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="header">
+        <meta charset="UTF-8"> </meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"></meta>
+        <title>Kassos-Net | TP DE POO</title>
+
+        <link rel="stylesheet" th:href="@{/css/themify-icons.css}"></link >
+        <link rel="stylesheet" th:href="@{/css/feather.css}"></link >
+        <!-- Favicon icon -->
+        <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon.png}"></link >
+        <!-- Custom Stylesheet -->
+        <link rel="stylesheet" th:href="@{/css/style.css}"></link >
+        <link rel="stylesheet" th:href="@{/css/emoji.css}"></link >
+        <link rel="stylesheet" th:href="@{/css/lightbox.css}"></link >
+
+        <style>
+            .profile-pic {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+
+            .profile-img {
+                width: 45px;
+                height: 45px;
+                object-fit: cover;
+                object-position: center;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- navigation top-->
+        <div class="nav-header bg-white shadow-xs border-0" th:fragment="top">
+            <div class="nav-top">
+                <a href="http://127.0.0.1:8080/"><i class="feather-zap text-success display1-size me-2 ms-0"></i><span class="d-inline-block fredoka-font ls-3 fw-600 text-current font-xxl logo-text mb-0">Kassos-Net </span> </a>
+                <a href="#" class="p-2 text-center ms-auto menu-icon" id="dropdownMenu3_2" data-bs-toggle="dropdown" aria-expanded="false"><span class="dot-count bg-warning"></span><i class="feather-bell font-xl text-current"></i></a>
+                <a href="#" class="me-2 menu-search-icon mob-menu"><i class="feather-search text-grey-900 font-sm btn-round-md bg-greylight"></i></a>
+                <button class="nav-menu me-0 ms-2"></button>
+            </div>
+
+            <form action="/Articles/Chercher" class="float-left header-search" id='formChercher' method='POST'>
+                <div class="form-group mb-0 icon-input">
+                    <i class="feather-search font-sm text-grey-400" onclick="send()" style="cursor: pointer"></i>
+                    <input type="text" name="sujet" id="sujet" placeholder="Tapez pour Commencer une recherche..." class="bg-grey border-0 lh-32 pt-2 pb-2 ps-5 pe-3 font-xssss fw-500 rounded-xl w350 theme-dark-bg">
+                </div>
+            </form>
+            <script>
+
+                function send() {
+                    formulaire = document.getElementById('formChercher');
+
+                    formulaire.submit();
+                }
+                function send2(sujet) {
+                    formulaire = document.getElementById('formChercher');
+                    document.getElementById('sujet').value = sujet;
+                    formulaire.submit();
+                }
+            </script>
+            <a href="http://127.0.0.1:8080/" class="p-2 text-center ms-3 menu-icon center-menu-icon"><i class="feather-home font-lg alert-primary btn-round-lg theme-dark-bg text-current "></i></a>
+            <a href="/Membres" class="p-2 text-center ms-0 menu-icon center-menu-icon"><i class="feather-user font-lg bg-greylight btn-round-lg theme-dark-bg text-grey-500 "></i></a>
+            <a href="/deconnection" class="p-2 text-center ms-0 menu-icon center-menu-icon"><i class="feather-power font-lg bg-greylight btn-round-lg theme-dark-bg text-grey-500 "></i></a>
+
+            <a href="#" class="p-2 text-center ms-auto menu-icon" id="dropdownMenu3" data-bs-toggle="dropdown" aria-expanded="false"><span class="dot-count bg-warning"></span><i class="feather-bell font-xl text-current"></i></a>
+            <!---ZONE DES NOTIFICATIONS -->
+            <div class="dropdown-menu dropdown-menu-end p-4 rounded-3 border-0 shadow-lg" aria-labelledby="dropdownMenu3">
+
+                <a href="/notifications"><h4 class="fw-700 font-xss mb-4"><a href="/notifications">Notifications(voir plus)</a></h4></a>
+                <div th:each="notification : ${TopNotifs}" class="card bg-transparent-card w-100 border-0 ps-5 mb-3">
+                    <img style="width: 45px;height: 45px;border-radius: 50%" th:src="@{/image_user/{fileName}(fileName=${notification.acteur.photo})}" src="images/user-8.png" alt="user" class="w40 position-absolute left-0">
+                        <h5 class="font-xsss text-grey-900 mb-1 mt-0 fw-700 d-block"  th:text="${notification.acteur.nom}">Tiger Fox <span class="text-grey-400 font-xsssss fw-600 float-right mt-1" th:text="${notification.date}"> 3 min</span></h5>
+                        <h6 class="font-xssss text-grey-900 text-grey-900 mb-0 mt-0 fw-500 lh-20"><strong th:text="${notification.acteur.nom}">Tiger Fox</strong> <span th:text="| ${notification.message} : |"> A COMMENTE VOTRE POST</span> <a  th:href="@{/Article/detail/{id}(id=${notification.article.id})}" th:text="|${notification.article.titre} |"> Etre une Femme :</a> </h6>
+                </div>
+
+            </div>
+            <a href="#" class="p-2 text-center ms-3 menu-icon chat-active-btn"><i class="feather-message-square font-xl text-current"></i></a>
+            <!---ZONE DES PARAMETRES-->
+            <div class="p-2 text-center ms-3 position-relative dropdown-menu-icon menu-icon cursor-pointer">
+
+                <i class="feather-settings animation-spin d-inline-block font-xl text-current"></i>
+                <div class="dropdown-menu-settings switchcolor-wrap">
+                    <h4 class="fw-700 font-sm mb-4">Paramètres</h4>
+                    <h6 class="font-xssss text-grey-500 fw-700 mb-3 d-block">Choisir un theme de couleur</h6>
+                    <ul>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="red" checked=""><i class="ti-check"></i>
+                                    <span class="circle-color bg-red" style="background-color: #ff3b30;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="green"><i class="ti-check"></i>
+                                    <span class="circle-color bg-green" style="background-color: #4cd964;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="blue" checked=""><i class="ti-check"></i>
+                                    <span class="circle-color bg-blue" style="background-color: #132977;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="pink"><i class="ti-check"></i>
+                                    <span class="circle-color bg-pink" style="background-color: #ff2d55;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="yellow"><i class="ti-check"></i>
+                                    <span class="circle-color bg-yellow" style="background-color: #ffcc00;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="orange"><i class="ti-check"></i>
+                                    <span class="circle-color bg-orange" style="background-color: #ff9500;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="gray"><i class="ti-check"></i>
+                                    <span class="circle-color bg-gray" style="background-color: #8e8e93;"></span>
+                            </label>
+                        </li>
+
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="brown"><i class="ti-check"></i>
+                                    <span class="circle-color bg-brown" style="background-color: #D2691E;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="darkgreen"><i class="ti-check"></i>
+                                    <span class="circle-color bg-darkgreen" style="background-color: #228B22;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="deeppink"><i class="ti-check"></i>
+                                    <span class="circle-color bg-deeppink" style="background-color: #FFC0CB;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="cadetblue"><i class="ti-check"></i>
+                                    <span class="circle-color bg-cadetblue" style="background-color: #5f9ea0;"></span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="item-radio item-content">
+                                <input type="radio" name="color-radio" value="darkorchid"><i class="ti-check"></i>
+                                    <span class="circle-color bg-darkorchid" style="background-color: #9932cc;"></span>
+                            </label>
+                        </li>
+                    </ul>
+
+                    <div class="card bg-transparent-card border-0 d-block mt-3">
+                        <h4 class="d-inline font-xssss mont-font fw-700">Header et Fond</h4>
+                        <div class="d-inline float-right mt-1">
+                            <label class="toggle toggle-menu-color"><input type="checkbox"><span class="toggle-icon"></span></label>
+                        </div>
+                    </div>
+                    <div class="card bg-transparent-card border-0 d-block mt-3">
+                        <h4 class="d-inline font-xssss mont-font fw-700">Position du Menu</h4>
+                        <div class="d-inline float-right mt-1">
+                            <label class="toggle toggle-menu"><input type="checkbox"><span class="toggle-icon"></span></label>
+                        </div>
+                    </div>
+                    <div class="card bg-transparent-card border-0 d-block mt-3">
+                        <h4 class="d-inline font-xssss mont-font fw-700">Dark Mode</h4>
+                        <div class="d-inline float-right mt-1">
+                            <label class="toggle toggle-dark"><input type="checkbox"><span class="toggle-icon"></span></label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <a th:href="@{/Utilisateur/detail/{id}(id=${CurrentUser.id})}" class="p-0 ms-3 menu-icon  profile-pic"><img th:src="@{/image_user/{fileName}(fileName=${CurrentUser.photo})}"   alt="user" class="w40 mt--1 profile-img"></a>
+
+        </div>
+        <!-- navigation top -->
+
+
+
+        <!-- navigation left -->
+        <nav class="navigation scroll-bar" th:fragment="left">
+            <div class="container ps-0 pe-0">
+                <div class="nav-content">
+                    <!----THEMES INTERRESAANTS-->
+                    <div class="nav-wrap bg-white bg-transparent-card rounded-xxl shadow-xss pt-3 pb-1 mb-2 mt-2">
+                        <div class="nav-caption fw-600 font-xssss text-grey-500"><span>Themes  </span>Interressants</div>
+                        <ul class="mb-1 top-content">
+                            <li class="logo d-none d-xl-block d-lg-block"></li>
+                            <li><a href="#" onclick="send2('actualite')" class="nav-content-bttn open-font" ><i class="feather-tv btn-round-md bg-blue-gradiant me-3"></i><span>Actualité</span></a></li>
+                            <li><a href="#" onclick="send2('concours')" class="nav-content-bttn open-font" ><i class="feather-award btn-round-md bg-red-gradiant me-3"></i><span>Concours</span></a></li>
+                            <li><a href="#" onclick="send2('monde')" class="nav-content-bttn open-font" ><i class="feather-globe btn-round-md bg-gold-gradiant me-3"></i><span>Monde</span></a></li>
+                            <li><a href="#" onclick="send2('ecologie')" class="nav-content-bttn open-font" ><i class="feather-zap btn-round-md bg-mini-gradiant me-3"></i><span>Ecologie</span></a></li>
+                            <li><a href="#" onclick="send2('personalite')" class="nav-content-bttn open-font"><i class="feather-user btn-round-md bg-primary-gradiant me-3"></i><span>Personnalités </span></a></li>                        
+                        </ul>
+                    </div>
+                    <div class="nav-wrap bg-white bg-transparent-card rounded-xxl shadow-xss pt-3 pb-1">
+                        <div class="nav-caption fw-600 font-xssss text-grey-500"><span></span>Compte</div>
+                        <ul class="mb-1">
+                            <li class="logo d-none d-xl-block d-lg-block"></li>
+                            <li><a href="/parametres" class="nav-content-bttn open-font h-auto pt-2 pb-2"><i class="font-sm feather-settings me-3 text-grey-500"></i><span>Parametres</span></a></li>
+                            <li><a th:href="@{/Utilisateur/detail/{id}(id=${CurrentUser.id})}" class="nav-content-bttn open-font h-auto pt-2 pb-2"><i class="font-sm feather-pie-chart me-3 text-grey-500"></i><span>Mon Profil</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- navigation left -->
+    </body>
+
+
+
+
+
+</html>

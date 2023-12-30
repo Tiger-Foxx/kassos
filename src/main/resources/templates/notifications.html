@@ -1,0 +1,86 @@
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base :: header">
+        <title>Kassos-Net | TP DE POO</title>
+    </head>
+
+    <body class="color-theme-blue mont-font">
+        <div class="preloader"></div>
+
+
+        <div class="main-wrapper">
+            <!--- PARTIE DE LA BARRE DE NAVIGATION ET DU MENU COMMUN-->
+            <div th:replace="base :: top"></div>
+
+            <div th:replace="base :: left"></div>   
+
+
+            <!-- main content -->
+            <div class="main-content right-chat-active">
+
+                <div class="middle-sidebar-bottom">
+                    <div class="middle-sidebar-left pe-0">
+                        <div class="row">
+
+                            <div class="col-xl-12">
+                                <div class="chat-wrapper p-3 w-100 position-relative scroll-bar bg-white theme-dark-bg">
+                                    <h2 class="fw-700 mb-4 mt-2 font-md text-grey-900 d-flex align-items-center">Notifications
+                                        <span class="circle-count bg-warning text-white font-xsssss rounded-3 ms-2 ls-3 fw-600 p-2  mt-0" id="nombre">23</span> 
+                                        <a href="notifications/lu" class="ms-2 btn-round-sm bg-greylight rounded-3" title="marquer comme lu"><i class="feather-alert-circle font-xss text-grey-500"></i></a> 
+
+                                    </h2>
+
+                                    <ul class="notification-box">
+                                        <li th:each="notification : ${notifications}" name="notif">
+                                            <a th:href="@{/Article/detail/{id}(id=${notification.article.id})}" class="d-flex align-items-center p-3 rounded-3">
+                                                <figure class="avatar me-2 mb-0"><img style="width: 45px;height: 45px;border-radius: 50%" th:src="@{/image_user/{fileName}(fileName=${notification.acteur.photo})}" alt="user" class="w45 me-3"></figure>
+                                                    <i class="feather-message-square text-white bg-mini-gradiant me-2 font-xssss notification-react"></i>
+                                                    <h6 class="font-xssss text-grey-900 text-grey-900 mb-0 mt-0 fw-500 lh-20"><strong th:text="${notification.acteur.nom}">Tiger Fox</strong> <span th:text="| ${notification.message} : |"> A COMMENTE VOTRE POST</span> <strong th:text="|${notification.article.titre} |"> Etre une Femme :</strong> <span class="d-block text-grey-500 font-xssss fw-600 mb-0 mt-0 0l-auto" th:text="${notification.date}">2 hours ago</span> </h6>
+                                                    <i class="ti-more-alt text-grey-500 font-xs ms-auto"></i>
+                                            </a>
+                                        </li>
+
+                                    </ul>    
+                                    <script>
+                                        var liste = document.getElementsByName("notif");
+                                        document.getElementById("nombre").innerText = liste.length;
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>            
+            </div>
+            <!-- main content -->
+
+            <!---MENU RESPONSIVE-->
+            <div class="app-footer border-0 shadow-lg bg-primary-gradiant">
+                <a href="/" class="nav-content-bttn nav-center"><i class="feather-home"></i></a>
+                <a href="parametres.html" class="nav-content-bttn"><img src="images/female-profile.png" alt="user" class="w30 shadow-xss"></a>
+            </div>
+            <!---BAR DE RECHERCHE RESPONSIVE-->
+            <div class="app-header-search">
+                <form action="/Articles/Chercher" class="search-form">
+                    <div class="form-group searchbox mb-0 border-0 p-1">
+                        <input type="text" name="sujet"  class="form-control border-0" placeholder="Rechercher...">
+                            <i class="input-icon">
+                                <ion-icon name="search-outline" role="img" class="md hydrated" aria-label="search outline"></ion-icon>
+                            </i>
+                            <a href="#" class="ms-1 mt-1 d-inline-block close searchbox-close">
+                                <i class="ti-close font-xs"></i>
+                            </a>
+                    </div>
+                </form>
+            </div>
+
+        </div> 
+
+        <script th:src="@{/js/plugin.js}"></script>
+        <script th:src="@{/js/scripts.js}"></script>
+
+    </body>
+
+</html>

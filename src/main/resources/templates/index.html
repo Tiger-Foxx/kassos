@@ -1,0 +1,598 @@
+
+<!DOCTYPE html>
+ <security:intercept-url pattern="/css/**" access="permitAll" />
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="base :: header">
+        <title>Kassos-Net | TP DE POO</title>
+    </head>
+
+    <body class="color-theme-blue mont-font">
+        <div class="preloader"></div>
+
+
+        <div class="main-wrapper">
+            <!--- PARTIE DE LA BARRE DE NAVIGATION ET DU MENU COMMUN-->
+            <div th:replace="base :: top"></div>
+
+            <div th:replace="base :: left"></div>    
+
+
+
+            <!-- main content -->
+            <div class="main-content right-chat-active">
+
+                <div class="middle-sidebar-bottom">
+                    <div class="middle-sidebar-left">
+                        <!-- loader wrapper -->
+                        <div class="preloader-wrap p-3">
+                            <div class="box shimmer">
+                                <div class="lines">
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                </div>
+                            </div>
+                            <div class="box shimmer mb-3">
+                                <div class="lines">
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                </div>
+                            </div>
+                            <div class="box shimmer">
+                                <div class="lines">
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                    <div class="line s_shimmer"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- loader wrapper -->
+                        <div class="row feed-body">
+                            <div class="col-xl-8 col-xxl-9 col-lg-8">
+                                <!---BOITE DE POST-->
+                                <div class="card w-100 shadow-xss rounded-xxl border-0 ps-4 pt-4 pe-4 pb-3 mb-3">
+                                    <h1 th:text="|Content de te voir ${CurrentUser.nom} ! | ">Message de bienvenue "</h1>
+                                </div>
+
+                                <div class="card w-100 shadow-none bg-transparent bg-transparent-card border-0 p-0 mb-0">
+                                    <div class="owl-carousel category-card owl-theme overflow-hidden nav-none">
+                                        <div class="item">
+                                            <div   class="card w125 h200 d-block border-0 shadow-none rounded-xxxl bg-dark overflow-hidden mb-3 mt-3">
+                                                <div class="card-body d-block p-3 w-100 position-absolute bottom-0 text-center">
+                                                    <a href="#">
+                                                        <span class="btn-round-lg bg-white" onclick="soumettreStory()"><i class="feather-plus font-lg"></i></span>
+                                                        <div class="clearfix"></div>
+                                                        <h4 class="fw-700 position-relative z-index-1 ls-1 font-xssss text-white mt-2 mb-1">Ajouter une Story </h4>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form action="/Ajout/Story" method="post" id="formulaireStory" enctype="multipart/form-data" hidden="true">
+                                            <input type="file" accept="image/*" name="image_story" id="btnImage">
+                                        </form>
+                                        <script>
+
+                                            // Modifier le code JavaScript
+                                            formulaireStory = document.getElementById("formulaireStory");
+                                            bouton = document.getElementById("btnImage");
+                                            function soumettreStory() {
+                                                // Cliquer sur le bouton du formulaire
+                                                bouton.click();
+                                                // Ajouter un écouteur d'événement sur le bouton
+                                                bouton.addEventListener("change", function () {
+                                                    // Vérifier si un fichier est sélectionné
+                                                    if (bouton.value) {
+                                                        // Soumettre le formulaire
+                                                        formulaireStory.submit();
+                                                    }
+                                                });
+                                            }
+
+                                        </script>
+                                        <div class="item" th:each="utilisateur : ${UtilisateursStory}">
+                                            <div data-bs-toggle="modal" th:data-bs-target="|#ModalStory${utilisateur.id}|" class="card w125 h200 d-block border-0 shadow-xss rounded-xxxl bg-gradiant-bottom overflow-hidden cursor-pointer mb-3 mt-3" style="background-image: url(images/s-5.jpg);">
+                                                <div class="card-body d-block p-3 w-100 position-absolute bottom-0 text-center">
+                                                    <a href="#">
+                                                        <figure class="avatar ms-auto me-auto mb-0 position-relative w50 z-index-1"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${utilisateur.photo})}" alt="image" class="float-right p-0 bg-white rounded-circle w-100 shadow-xss"></figure>
+                                                        <div class="clearfix"></div>
+                                                        <a th:href="@{/Utilisateur/detail/{id}(id=${utilisateur.id})}"><h4 class="fw-600 position-relative z-index-1 ls-1 font-xssss text-white mt-2 mb-1" th:text="${utilisateur.nom}">Victor Exrixon </h4></a> 
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <!---BOITE DE POST-->
+                                <div class="card w-100 shadow-xss rounded-xxl border-0 ps-4 pt-4 pe-4 pb-3 mb-3">
+                                    <div class="card-body p-0">
+                                        <a 
+                                            class=" font-xssss fw-600 text-grey-500 card-body p-0 d-flex align-items-center"
+                                            id="nom_image"><i
+                                                class="btn-round-sm font-xs text-primary feather-edit-3 me-2 bg-greylight"></i>Creer
+                                            un Post</a>
+                                        <button id="BoutonPost" onclick="document.getElementById('formPoster').submit()" class="BoutonPoster" >Poster</button>
+                                    </div>
+                                    <form action="/Article/poster"  method="post" th:object="${article}" id="formPoster" enctype="multipart/form-data" >
+                                        <div class="card-body p-0 mt-3 position-relative">
+                                            <figure class="avatar position-absolute ms-2 mt-1 top-5"><img
+                                                    style="width: 25px;height: 25px;" th:src="@{/image_user/{fileName}(fileName=${CurrentUser.photo})}" alt="image"
+                                                    class="shadow-sm rounded-circle w30"></figure>
+                                            <textarea name="titre"
+                                                      class="bor-0 w-100 rounded-xxl p-2 ps-5 font-xssss text-grey-500 fw-500 border-light-md theme-dark-bg"
+                                                      cols="30" rows="3" placeholder="Donnez un titre..." th:field="*{titre}" style="height: 50px" ></textarea>
+                                            <textarea name="texte"
+                                                      class="h100 bor-0 w-100 rounded-xxl p-2 ps-5 font-xssss text-grey-500 fw-500 border-light-md theme-dark-bg"
+                                                      cols="30" rows="10" placeholder="Que voulez-vous dire ?" th:field="*{texte}"></textarea>
+                                            <input type="file" id="image_post" name="file" hidden="true"
+                                                   onchange="nomImg()" accept="image/*" >
+                                                <input type="text" name="theme" value="" hidden="true" id="themeInput" th:field="*{theme}">
+                                                    <input type="text" name="utilisateurId" th:value="${CurrentUser.id}" hidden="true">
+                                                        </div>
+                                                        </form>
+                                                        <script>
+                                                            function imagepic() {
+                                                                document.getElementById("image_post").click();
+                                                            }
+                                                            function nomImg() {
+                                                                document.getElementById("nom_image").innerText = "image : " + document.getElementById("image_post").value;
+                                                            }
+                                                            function chooseTheme(id) {
+                                                                choosed = document.getElementById(id);
+                                                                themeInput = document.getElementById("themeInput");
+                                                                if (choosed.innerText == "Aucun") {
+                                                                    themeInput.value = "";
+                                                                } else {
+                                                                    themeInput.value = choosed.innerText;
+                                                                }
+
+                                                                alert(themeInput.value);
+
+                                                            }
+                                                        </script>
+                                                        <div class="card-body d-flex p-0 mt-0">
+                                                            <a href="#"
+                                                               class="d-flex align-items-center font-xssss fw-600 ls-1 text-grey-700 text-dark pe-4"><i
+                                                                    class="font-md text-success feather-image me-2"
+                                                                    onclick="imagepic()"></i><span class="d-none-xs">Photo</span></a>
+                                                            <a href="#" class="ms-auto" id="dropdownMenu4" data-bs-toggle="dropdown"
+                                                               aria-expanded="false"><i
+                                                                    class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                            <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg"
+                                                                 aria-labelledby="dropdownMenu4">
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px; cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag0"
+                                                                        onclick="chooseTheme(this.id)">Aucun</h4>
+                                                                </div>
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px; cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag1"
+                                                                        onclick="chooseTheme(this.id)">Actualite</h4>
+                                                                </div>
+
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px;cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag2"
+                                                                        onclick="chooseTheme(this.id)">Ecologie</h4>
+                                                                </div>
+
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px;cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag3"
+                                                                        onclick="chooseTheme(this.id)">Monde</h4>
+                                                                </div>
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px;cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag4"
+                                                                        onclick="chooseTheme(this.id)">divertissement</h4>
+                                                                </div>
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px;cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag5"
+                                                                        onclick="chooseTheme(this.id)">Concours</h4>
+                                                                </div>
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px;cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag5"
+                                                                        onclick="chooseTheme(this.id)">Personalite</h4>
+                                                                </div>
+                                                                <div class="card-body p-0 d-flex" style="margin-top: 5px;cursor:pointer;">
+                                                                    <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                    <h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4" id="Tag6"
+                                                                        onclick="chooseTheme(this.id)">Evenement</h4>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
+
+                                                        <div  class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0" th:if="${article1 != null}">
+                                                            <div class="card-body p-0 d-flex">
+                                                                <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${article1.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
+                                                                <a th:href="@{/Utilisateur/detail/{id}(id=${article1.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article1.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article1.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
+                                                                <!-- Ajouter un OU à la condition Thymeleaf -->
+                                                                <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR || article1.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article2.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                                <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article1.id}|">
+                                                                    <div class="card-body p-0 d-flex">
+                                                                        <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                        <a href="#" th:id="|${article1.id}|" onclick="supprimer(this.id)" ><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Supprimer <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Supprimer la publication</span></h4></a>
+                                                                    </div>
+                                                                    <a th:href="@{/Article/Delete/{id}(id=${article1.id})}" th:id="|link${article1.id}|" hidden="true"></a>
+                                                                    <script>
+                                                                        function supprimer(id) {
+
+                                                                            if (confirm("VOULEZ VOUS VRAIMENT EFFECTUER CETTE SUPPRESSION ?")) {
+                                                                                ID = "link" + id;
+                                                                                document.getElementById(ID).click();
+                                                                                //alert("ok");
+                                                                            }
+                                                                        }
+                                                                    </script>
+
+                                                                    <div class="card-body p-0 d-flex mt-2">
+                                                                        <i class="feather-alert-octagon text-grey-500 me-3 font-lg"></i>
+                                                                        <a th:href="@{/Article/Modifier/{id}(id=${article1.id})}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Modifier <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Modifier la publication</span></h4></a>
+                                                                    </div>
+
+                                                                </div>                                </div>
+                                                            <div class="card-body p-0 me-lg-5">
+                                                                <a th:href="@{/Article/detail/{id}(id=${article1.id})}" class="titre"><h4 class="fw-700 text-grey-900" th:text="${article1.titre}"></h4></a>
+                                                                <p class="fw-500 text-grey-500 lh-26 font-xssss w-100 mb-2" th:text="${article1.getResume()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non ni<a href="#" th:href="@{/Article/detail/{id}(id=${article1.id})}" th:text="See more" class="fw-600 text-primary ms-2"></a></p>
+                                                            </div>
+                                                            <div class="card-body d-block p-0 mb-3">
+                                                                <div class="row ps-2 pe-2">
+                                                                    <div class="col-sm-12 p-1" th:if="${article1.image != null}">
+                                                                        <a th:href="@{/image/{fileName}(fileName=${article1.image})}" data-lightbox="roadtr">
+                                                                            <img th:src="@{/image/{fileName}(fileName=${article1.image})}" class="rounded-3 w-100" alt="image">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="card-body d-flex p-0">
+                                                                <a href="#" th:text="|Score ${article1.score}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i  class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</a>
+
+                                                                <a href=th:text="${article1.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="|Score ${article1.score}|">22 Comment</span></a>
+                                                                <a href=th:text="${article1.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card w-100 shadow-none bg-transparent bg-transparent-card border-0 p-0 mb-0">
+                                                            <div  class="owl-carousel category-card owl-theme overflow-hidden nav-none">
+                                                                <!-<!-- PROPOSITIONS DE POSTS A LIRE -->
+                                                                <div th:each="article : ${articles_propose}" class="item">
+                                                                    <div class="card w200 d-block border-0 shadow-xss rounded-xxl overflow-hidden mb-3 me-2 mt-3">
+                                                                        <div class="card-body position-relative h100 bg-image-cover bg-image-center" style="background-image: url(images/u-bg.jpg);"></div>
+                                                                        <div class="card-body d-block w-100 ps-4 pe-4 pb-4 text-center">
+                                                                            <figure class="avatar ms-auto me-auto mb-0 mt--6 position-relative w75 z-index-1"><img style="width: 75px;height: 75px;" th:src="@{/image_user/{fileName}(fileName=${article.utilisateur.photo})}" alt="image" class="float-right p-1 bg-white rounded-circle w-100"></figure>
+                                                                            <div class="clearfix"></div>
+                                                                            <h4 class="fw-700 font-xsss mt-2 mb-1" th:text="${article.titre}">Etre une femme </h4>
+                                                                            <p class="fw-500 font-xsssss text-grey-500 mt-0 mb-2" th:text="${article.utilisateur.nom}">donfack Pascal</p>
+                                                                            <a th:href="@{/Article/detail/{id}(id=${article.id})}"><span class="live-tag mt-2 mb-0 bg-danger p-2 z-index-1 rounded-3 text-white font-xsssss text-uppersace fw-700 ls-3">LIRE</span></a>
+                                                                            <div class="clearfix mb-2"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div  class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0" th:if="${article2 != null}">
+                                                            <a href="#" ></a>
+                                                            <div class="card-body p-0 d-flex">
+                                                                <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${article2.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
+                                                                <a th:href="@{/Utilisateur/detail/{id}(id=${article2.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article2.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article2.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
+
+                                                                <!-- Ajouter un OU à la condition Thymeleaf -->
+                                                                <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR || article2.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article2.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+
+                                                                <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article2.id}|">
+                                                                    <div class="card-body p-0 d-flex">
+                                                                        <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                        <a href="#" th:id="|${article2.id}|" onclick="supprimer(this.id)" ><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Supprimer <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Supprimer la publication</span></h4></a>
+                                                                    </div>
+                                                                    <a th:href="@{/Article/Delete/{id}(id=${article2.id})}" th:id="|link${article2.id}|" hidden="true"></a>
+
+
+                                                                    <div class="card-body p-0 d-flex mt-2">
+                                                                        <i class="feather-alert-octagon text-grey-500 me-3 font-lg"></i>
+                                                                        <a th:href="@{/Article/Modifier/{id}(id=${article2.id})}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Modifier <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Modifier la publication</span></h4></a>
+                                                                    </div>
+
+                                                                </div>                                </div>
+                                                            <div class="card-body p-0 me-lg-5">
+                                                                <a th:href="@{/Article/detail/{id}(id=${article2.id})}" class="titre"><h4 class="fw-700 text-grey-900" th:text="${article2.titre}"></h4></a>
+                                                                <p class="fw-500 text-grey-500 lh-26 font-xssss w-100 mb-2" th:text="${article2.getResume()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non ni<a href="#" th:href="@{/Article/detail/{id}(id=${article2.id})}" th:text="See more" class="fw-600 text-primary ms-2"></a></p>
+                                                            </div>
+                                                            <div class="card-body d-block p-0 mb-3">
+                                                                <div class="row ps-2 pe-2">
+                                                                    <div class="col-sm-12 p-1" th:if="${article2.image != null}">
+                                                                        <a th:href="@{/image/{fileName}(fileName=${article2.image})}" data-lightbox="roadtr">
+                                                                            <img th:src="@{/image/{fileName}(fileName=${article2.image})}" class="rounded-3 w-100" alt="image">
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="card-body d-flex p-0">
+                                                                <a href="#" th:text="|Score ${article2.score}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i th:text="|Score ${article2.score}|" class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</a>
+
+                                                                <a href=th:text="${article2.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="|Score ${article2.score}|">22 Comment</span></a>
+                                                                <a href=th:text="${article2.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" ></span></a>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card w-100 shadow-none bg-transparent bg-transparent-card border-0 p-0 mb-0">
+                                                            <div class="owl-carousel category-card owl-theme overflow-hidden nav-none">
+                                                                <div  th:each="utilisateur : ${utilisateurs_propose}" class="item">
+                                                                    <div class="card w150 d-block border-0 shadow-xss rounded-3 overflow-hidden mb-3 me-2 mt-3">
+                                                                        <div class="card-body d-block w-100 ps-3 pe-3 pb-4 text-center">
+                                                                            <figure class="avatar ms-auto me-auto mb-0 position-relative w65 z-index-1"><img style="width: 65px;height: 65px;" th:src="@{/image_user/{fileName}(fileName=${utilisateur.photo})}" alt="image" class="float-right p-0 bg-white rounded-circle w-100 shadow-xss"></figure>
+                                                                            <div class="clearfix"></div>
+                                                                            <h4 class="fw-700 font-xssss mt-3 mb-1" th:text="${utilisateur.nom}">Richard Bowers  </h4>
+                                                                            <p class="fw-500 font-xsssss text-grey-500 mt-0 mb-3" th:text="${utilisateur.email}">@macale343</p>
+                                                                            <a th:href="@{/Utilisateur/detail/{id}(id=${utilisateur.id})}" class="text-center p-2 lh-20 w100 ms-1 ls-3 d-inline-block rounded-xl bg-success font-xsssss fw-700 ls-lg text-white">CONSULTER</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                                        <script>
+                                                             finish = false; 
+                                                                    $(document).ready(function () {
+                                                                        var page = 0;
+                                                                        // ajouter la variable finish
+                                                                        // Cacher l'effet de chargement au début
+                                                                        $("#charge").hide();
+                                                                        $(window).scroll(function () {
+                                                                            // Envoyer une requête AJAX seulement si il y a encore des données à charger
+//                                                                            alert("liste Article :"document.getElementsByName("listeArticle").length);
+//                                                                            alert("taille-1: "document.getElementById("taille").value-1);
+                                                                            if (document.getElementsByName("listeArticle").length<document.getElementById("taille").value-1) {
+                                                                                page++;
+                                                                                loadMore(page);
+                                                                            }
+                                                                        });
+                                                                    });
+
+                                                                    function loadMore(page) {
+                                                                        // Afficher l'effet de chargement pendant la requête
+                                                                        $("#charge").show();
+                                                                        $.ajax({
+                                                                            url: "/loadMore?page=" + page,
+                                                                            type: "get",
+                                                                            success: function (response) {
+                                                                                if (response) {
+                                                                                    $("#articleList").append(response);
+                                                                                } else {
+                                                                                    // S'il n'y a plus de données à renvoyer, passer la variable finish à true
+                                                                                    finish = true;
+                                                                                }
+                                                                                // Cacher l'effet de chargement après la requête
+                                                                                $("#charge").hide();
+                                                                            },
+                                                                            error: function (xhr) {
+                                                                                // handle error
+                                                                            }
+                                                                        });
+                                                                    }
+                                                        </script>
+
+                                                        <input type="number" hidden="true" th:value="${taille}" id="taille">
+
+
+                                                        <div id="articleList" th:fragment="articleList"  >
+                                                            <div name="listeArticle" th:if="|${articles_restants.size() >0 }|" th:each="article : ${articles_restants}"  class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0">
+                                                                <div  class="card-body p-0 d-flex">
+                                                                    <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${article.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
+                                                                    <a th:href="@{/Utilisateur/detail/{id}(id=${article.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
+
+                                                                    <!-- Ajouter un OU à la condition Thymeleaf -->
+                                                                    <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR || article.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article2.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                                    <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article.id}|">
+                                                                        <div class="card-body p-0 d-flex">
+                                                                            <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                            <a href="#" th:id="|${article.id}|" onclick="supprimer(this.id)" ><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Supprimer <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Supprimer la publication</span></h4></a>
+                                                                        </div>
+                                                                        <a th:href="@{/Article/Delete/{id}(id=${article.id})}" th:id="|link${article.id}|" hidden="true"></a>
+
+
+                                                                        <div class="card-body p-0 d-flex mt-2">
+                                                                            <i class="feather-alert-octagon text-grey-500 me-3 font-lg"></i>
+                                                                            <a th:href="@{/Article/Modifier/{id}(id=${article.id})}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Modifier <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Modifier la publication</span></h4></a>
+                                                                        </div>
+
+                                                                    </div>                                
+                                                                </div>
+                                                                <div class="card-body p-0 me-lg-5">
+                                                                    <a th:href="@{/Article/detail/{id}(id=${article.id})}" class="titre"><h4 class="fw-700 text-grey-900" th:text="${article.titre}"></h4></a>
+                                                                    <p class="fw-500 text-grey-500 lh-26 font-xssss w-100 mb-2" th:text="${article.getResume()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non ni<a href="#" th:href="@{/Article/detail/{id}(id=${article.id})}" th:text="See more" class="fw-600 text-primary ms-2"></a></p>
+                                                                </div>
+                                                                <div class="card-body d-block p-0 mb-3">
+                                                                    <div class="row ps-2 pe-2">
+                                                                        <div class="col-sm-12 p-1" th:if="${article.image != null}">
+                                                                            <a th:href="@{/image/{fileName}(fileName=${article.image})}" data-lightbox="roadtr">
+                                                                                <img th:src="@{/image/{fileName}(fileName=${article.image})}" class="rounded-3 w-100" alt="image">
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="card-body d-flex p-0">
+                                                                    <a href="#" th:text="|Score ${article.score}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</a>
+
+                                                                    <a href=th:text="${article.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="|Score ${article.score}|">22 Comment</span></a>
+                                                                    <a href=th:text="${article.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" th:text="|Score ${article.score}|"></span></a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <!---CHARGEMENT AJAX AU DEFILEMENT-->
+                                                        <div class="card w-100 text-center shadow-xss rounded-xxl border-0 p-4 mb-3 mt-3" id="charge">
+                                                            <div class="snippet mt-2 ms-auto me-auto" data-title=".dot-typing">
+                                                                <div class="stage">
+                                                                    <div class="dot-typing"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        </div>               
+                                                        <div class="col-xl-4 col-xxl-3 col-lg-4 ps-lg-0">
+                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3">
+                                                                <div class="card-body d-flex align-items-center p-4">
+                                                                    <h4 class="fw-700 mb-0 font-xssss text-grey-900">Profils Suggérés</h4>
+                                                                    <a href="/Membres" class="fw-600 ms-auto font-xssss text-primary">Tout Voir</a>
+                                                                </div>
+                                                                <script>
+                                                                    function supprimer2(id) {
+
+                                                                        if (confirm("VOULEZ VOUS VRAIMENT EFFECTUER CETTE SUPPRESSION ? ")) {
+                                                                            ID = "link" + id;
+                                                                            document.getElementById(ID).click();
+                                                                            //alert("ok");
+                                                                        }
+                                                                    }
+                                                                </script>
+                                                                <div th:each="utilisateur : ${utilisateurs_propose}" >
+                                                                    <a th:href="@{/Membre/Delete/{id}(id=${utilisateur.id})}" th:id="|linkU${utilisateur.id}|" hidden="true"></a>
+                                                                    <div class="card-body d-flex pt-4 ps-4 pe-4 pb-0 border-top-xs bor-0">
+                                                                        <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
+                                                                        <h4 class="fw-700 text-grey-900 font-xssss mt-1" ><span th:text="${utilisateur.nom}">Anthony Daugloi</span> <span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500" th:text="|le ${#dates.format(utilisateur.date, 'dd-MM-yyyy HH:mm')}|">12 Publications</span></h4>
+                                                                    </div>
+                                                                    <div class="card-body d-flex align-items-center pt-0 ps-4 pe-4 pb-4">
+                                                                        <a th:href="@{/Utilisateur/detail/{id}(id=${utilisateur.id})}" class="p-2 lh-20 w100 bg-primary-gradiant me-2 text-white text-center font-xssss fw-600 ls-1 rounded-xl">Voir le profil</a>
+                                                                        <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR}" href="#" th:id="|U${utilisateur.id}|" onclick="supprimer2(this.id)" class="p-2 lh-20 w100 bg-grey text-grey-800 text-center font-xssss fw-600 ls-1 rounded-xl">Supprimer</a>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <!---SUGGESTIONS DE PUBLICATIONS-->
+                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 p-0 ">
+                                                                <div class="card-body d-flex align-items-center p-4 mb-0">
+                                                                    <h4 class="fw-700 mb-0 font-xssss text-grey-900">Publications Suggérées</h4>
+                                                                </div>
+                                                                <div th:each="article : ${articles_propose}" class="card-body bg-transparent-card d-flex p-3 bg-greylight ms-3 me-3 rounded-3">
+                                                                    <figure class="avatar me-2 mb-0"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${article.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
+                                                                    <a th:href="@{/Utilisateur/detail/{id}(id=${article.utilisateur.id})}"><h4 class="fw-700 text-grey-900 font-xssss mt-2" th:text="${article.utilisateur.nom}">Auteur : Anthony Daugloi</a> <span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500" th:text="${article.titre}">Titre :12 mutual friends</span></h4>
+                                                                    <a th:href="@{/Article/detail/{id}(id=${article.id})}" class="btn-round-sm bg-white text-grey-900 feather-chevron-right font-xss ms-auto mt-2"></a>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3 mt-3" >
+                                                                <div class="card-body d-flex align-items-center p-4">
+                                                                    <h4 class="fw-700 mb-0 font-xssss text-grey-900">La plus Populaire</h4>
+                                                                    <a  th:href="@{/Article/detail/{id}(id=${articleTop.id})}" class="fw-600 ms-auto font-xssss text-primary" >Plus de détails</a>
+                                                                </div>
+                                                                <div class="card-body d-flex pt-4 ps-4 pe-4 pb-0 overflow-hidden border-top-xs bor-0">
+                                                                    <img th:if="${articleTop.image != null}" th:src="@{/image/{fileName}(fileName=${articleTop.image})}"  alt="img" class="img-fluid rounded-xxl mb-2">
+                                                                </div>
+                                                                <div class="card-body dd-block pt-0 ps-4 pe-4 pb-4">
+                                                                    <ul class="memberlist mt-1 mb-2 ms-0 d-block">
+
+                                                                        <li class="last-member"><a href="#" class="bg-greylight fw-600 text-grey-500 font-xssss w35 ls-3 text-center" style="height: 35px; line-height: 35px;" th:text="|+${articleTop.score}|">+2</a></li>
+                                                                        <li class="ps-3 w-auto ms-1"><a th:href="@{/Article/detail/{id}(id=${articleTop.id})}" class="fw-600 text-grey-500 font-xssss" th:text="${articleTop.titre}" >Commentateurs</a></li>
+                                                                    </ul>
+                                                                </div>
+
+
+
+                                                            </div>
+
+                                                            <!--EVENEMENTS-->
+                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3">
+                                                                <div class="card-body d-flex align-items-center  p-4">
+                                                                    <h4 class="fw-700 mb-0 font-xssss text-grey-900">Evenements</h4>
+                                                                </div>
+                                                                <div class="card-body d-flex pt-0 ps-4 pe-4 pb-3 overflow-hidden">
+                                                                    <div class="bg-success me-2 p-3 rounded-xxl"><h4 class="fw-700 font-lg ls-3 lh-1 text-white mb-0"><span class="ls-1 d-block font-xsss text-white fw-600">FEB</span>22</h4></div>
+                                                                    <h4 class="fw-700 text-grey-900 font-xssss mt-2">Présentation du projet <span class="d-block font-xsssss fw-500 mt-1 lh-4 text-grey-500">en janvier 2024 a polytech</span> </h4>
+                                                                </div>
+
+                                                                <div class="card-body d-flex pt-0 ps-4 pe-4 pb-3 overflow-hidden">
+                                                                    <div class="bg-warning me-2 p-3 rounded-xxl"><h4 class="fw-700 font-lg ls-3 lh-1 text-white mb-0"><span class="ls-1 d-block font-xsss text-white fw-600">APR</span>30</h4></div>
+                                                                    <h4 class="fw-700 text-grey-900 font-xssss mt-2">Améliorations à apporter <span class="d-block font-xsssss fw-500 mt-1 lh-4 text-grey-500">en janvier 2024 a polytech</span> </h4>
+                                                                </div>
+
+                                                                <div class="card-body d-flex pt-0 ps-4 pe-4 pb-3 overflow-hidden">
+                                                                    <div class="bg-primary me-2 p-3 rounded-xxl"><h4 class="fw-700 font-lg ls-3 lh-1 text-white mb-0"><span class="ls-1 d-block font-xsss text-white fw-600">APR</span>23</h4></div>
+                                                                    <h4 class="fw-700 text-grey-900 font-xssss mt-2">Fete de fin de semestre  <span class="d-block font-xsssss fw-500 mt-1 lh-4 text-grey-500">en janvier 2024 a polytech</span> </h4>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        </div>
+                                                        </div>
+
+                                                        </div>            
+                                                        </div>
+                                                        <!-- main content -->
+
+
+                                                        <!---MENU RESPONSIVE-->
+                                                        <div class="app-footer border-0 shadow-lg bg-primary-gradiant">
+                                                            <a href="/" class="nav-content-bttn nav-center"><i class="feather-home"></i></a>
+                                                            <a href="/parametres" class="nav-content-bttn"><img src="images/female-profile.png" alt="user" class="w30 shadow-xss"></a>
+                                                        </div>
+                                                        <!---BAR DE RECHERCHE RESPONSIVE-->
+                                                        <div class="app-header-search">
+                                                            <form action="/Articles/Chercher" class="search-form">
+                                                                <div class="form-group searchbox mb-0 border-0 p-1">
+                                                                    <input type="text" name="sujet"  class="form-control border-0" placeholder="Rechercher...">
+                                                                        <i class="input-icon">
+                                                                            <ion-icon name="search-outline" role="img" class="md hydrated" aria-label="search outline"></ion-icon>
+                                                                        </i>
+                                                                        <a href="#" class="ms-1 mt-1 d-inline-block close searchbox-close">
+                                                                            <i class="ti-close font-xs"></i>
+                                                                        </a>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+
+                                                        </div> 
+                                                        <!---REPRESENTATION D'UNE PUBLICATION SANS TEXTE CONSIDEREES COMME DES STORY-->
+
+                                                        <div th:each="utilisateur : ${UtilisateursStory}" class="modal bottom side fade" th:id="|ModalStory${utilisateur.id}|" tabindex="-1" role="dialog" style=" overflow-y: auto;">
+                                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                                <div class="modal-content border-0 bg-transparent">
+                                                                    <button type="button" class="close mt-0 position-absolute top--30 right--10" data-dismiss="modal" aria-label="Close"><i class="ti-close text-grey-900 font-xssss"></i></button>
+                                                                    <div class="modal-body p-0">
+                                                                        <div class="card w-100 border-0 rounded-3 overflow-hidden bg-gradiant-bottom bg-gradiant-top">
+                                                                            <div class="owl-carousel owl-theme dot-style3 story-slider owl-dot-nav nav-none">
+                                                                                <div th:each="story : ${stories}" class="item"><img th:if="${story.utilisateur.id == utilisateur.id}" th:src="@{/image_story/{fileName}(fileName=${story.image})}" alt="image"></div>
+
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group mt-3 mb-0 p-3 position-absolute bottom-0 z-index-1 w-100">
+
+                                                                            <span class="feather-send text-white font-md text-white position-absolute" style="bottom: 35px;right:30px;"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <script th:src="@{/js/plugin.js}"></script>
+                                                        <script th:src="@{/js/lightbox.js}"></script>
+                                                        <script th:src="@{/js/scripts.js}"></script>
+
+                                                        </body>
+
+                                                        </html>

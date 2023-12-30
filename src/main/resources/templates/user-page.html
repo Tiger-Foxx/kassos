@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                    <title>Kassos-Net | TP DE POO</title>
+
+                    <link rel="stylesheet" href="css/themify-icons.css">
+                        <link rel="stylesheet" href="css/feather.css">
+                            <!-- Favicon icon -->
+                            <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+                                <!-- Custom Stylesheet -->
+                                <link rel="stylesheet" href="css/style.css">
+                                    <link rel="stylesheet" href="css/emoji.css">
+                                        <link rel="stylesheet" href="css/lightbox.css">
+
+                                            </head>
+
+                                            <!DOCTYPE html>
+                                            <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+                                                <head th:replace="base :: header">
+                                                    <title>Kassos-Net | TP DE POO</title>
+                                                </head>
+
+                                                <body class="color-theme-blue mont-font">
+                                                    <div class="preloader"></div>
+
+
+                                                    <div class="main-wrapper">
+                                                        <!--- PARTIE DE LA BARRE DE NAVIGATION ET DU MENU COMMUN-->
+                                                        <div th:replace="base :: top"></div>
+
+                                                        <div th:replace="base :: left"></div>  
+
+
+                                                        <!-- main content -->
+                                                        <div class="main-content right-chat-active">
+
+                                                            <div class="middle-sidebar-bottom">
+                                                                <div class="middle-sidebar-left">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12">
+                                                                            <div class="card w-100 border-0 p-0 bg-white shadow-xss rounded-xxl">
+                                                                                <div class="card-body h250 p-0 rounded-xxl overflow-hidden m-3"><img th:src="@{/images/u-bg.jpg}" alt="image"></div>
+                                                                                <div class="card-body p-0 position-relative">
+                                                                                    <figure class="avatar position-absolute w100 z-index-1" style="top:-40px; left: 30px;width: 100px;height: 100px;border-radius: 50%;overflow: hidden;"><img th:src="@{/image_user/{fileName}(fileName=${utilisateur.photo})}" alt="image" class="float-right p-1 bg-white rounded-circle w-100" style="height: 100px;width: 100px"></figure>
+                                                                                    <h4 class="fw-700 font-sm mt-2 mb-lg-5 mb-4 pl-15" th:text="|${utilisateur.nom} |">Tiger Fox <span class="fw-500 font-xssss text-grey-500 mt-1 mb-3 d-block" th:text="|${utilisateur.email} |">support@gmail.com</span></h4>
+                                                                                    <div class="d-flex align-items-center justify-content-center position-absolute-md right-15 top-0 me-2">
+                                                                                        <a th:href="@{/Membre/Delete/{id}(id=${utilisateur.id})}" class="d-none d-lg-block bg-danger p-3 z-index-1 rounded-3 text-white font-xsssss text-uppercase fw-700 ls-3">Supprimer</a>
+                                                                                        <a href="#" title="supprimer tous les posts" class="d-none d-lg-block bg-greylight btn-round-lg ms-2 rounded-3 text-grey-700"><i class="feather-delete font-md"></i></a>
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="card-body d-block w-100 shadow-none mb-0 p-0 border-top-xs">
+                                                                                    <ul class="nav nav-tabs h55 d-flex product-info-tab border-bottom-0 ps-4" id="pills-tab" role="tablist">
+                                                                                        <li class="active list-inline-item me-5"><a class="fw-700 font-xssss text-grey-500 pt-3 pb-3 ls-1 d-inline-block active" href="#navtabs1" data-toggle="tab">A Propos de Moi</a></li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-xl-4 col-xxl-3 col-lg-4 pe-0">
+                                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3 mt-3">
+                                                                                <div class="card-body p-3 border-0">
+                                                                                    <div class="row">
+                                                                                        <div class="col-3">
+                                                                                            <div class="chart-container w50 h50">
+                                                                                                <div class="chart position-relative" data-percent="78" data-bar-color="#a7d212">
+                                                                                                    <span class="percent fw-700 font-xsss" data-after="%">78</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-8 ps-1">
+                                                                                            <h4 class="font-xsss d-block fw-700 mt-2 mb-0"  th:text="|telephone:  ${utilisateur.telephone} |">Employé chez FOX <span class="float-right mt-2 font-xsssss text-grey-500">87%</span></h4>
+                                                                                            <p class="font-xssss fw-600 text-grey-500 lh-26 mb-0"  th:text="|Depuis le  ${utilisateur.date} |">le 6/26/2022</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3">
+                                                                                <div class="card-body d-block p-4">
+                                                                                    <h4 class="fw-700 mb-3 font-xsss text-grey-900">Un mot sur Moi</h4>
+                                                                                    <p class="fw-500 text-grey-500 lh-24 font-xssss mb-0"  th:text="|${utilisateur.description} |">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non nisi. Phasellus faucibus mollis pharetra. Proin blandit ac massa sed rhoncus</p>
+                                                                                </div>
+                                                                                <div class="card-body border-top-xs d-flex">
+                                                                                    <i class="feather-map-pin    text-grey-500 me-3 font-lg"></i>
+                                                                                    <h4 class="fw-700 text-grey-900 font-xssss mt-0">ville <span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500"  th:text="|${utilisateur.ville} |">Yaounde</span></h4>
+                                                                                </div>
+
+                                                                                <div class="card-body d-flex pt-0">
+                                                                                    <i class="feather-eye text-grey-500 me-3 font-lg"></i>
+                                                                                    <h4 class="fw-700 text-grey-900 font-xssss mt-0" th:text="|Connu comme ${utilisateur.pseudo} |">Pseudo <span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">Tiger Fox</span></h4>
+                                                                                </div>
+
+                                                                                <div class="card-body d-flex pt-0">
+                                                                                    <i class="feather-users text-grey-500 me-3 font-lg"></i>
+                                                                                    <h4 class="fw-700 text-grey-900 font-xssss mt-1">Posts : 3</h4>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3">
+                                                                                <div class="card-body d-flex align-items-center  p-4">
+                                                                                    <h4 class="fw-700 mb-0 font-xssss text-grey-900">Photos</h4>
+                                                                                </div>
+                                                                                <!---PHOTOS STORY-->
+                                                                                <div class="card-body d-block pt-0 pb-2">
+                                                                                    <div class="row">
+                                                                                        <div class="col-6 mb-2 pe-1" th:each="article : ${articles}"><a th:if="${article.image != null}" th:href="@{/image/{fileName}(fileName=${article.image})}" data-lightbox="roadtrip"><img  th:src="@{/image/{fileName}(fileName=${article.image})}" alt="image" class="img-fluid rounded-3 w-100"></a></div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                        <div class="col-xl-8 col-xxl-9 col-lg-8">
+                                                                            <!--POST SUR LE PROFIL-->
+                                                                            <div th:each="article : ${articles}" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0">
+                                                                                <div  class="card-body p-0 d-flex">
+                                                                                    <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${article.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
+                                                                                    <a th:href="@{/Utilisateur/detail/{id}(id=${article.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
+
+                                                                                    <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR or article.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                                                    <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article.id}|">
+                                                                                        <div class="card-body p-0 d-flex">
+                                                                                            <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
+                                                                                            <a href="#" th:id="|${article.id}|" onclick="supprimer(this.id)" ><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Supprimer <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Supprimer la publication</span></h4></a>
+                                                                                        </div>
+                                                                                        <a th:href="@{/Article/Delete/{id}(id=${article.id})}" th:id="|link${article.id}|" hidden="true"></a>
+
+
+                                                                                        <div class="card-body p-0 d-flex mt-2">
+                                                                                            <i class="feather-alert-octagon text-grey-500 me-3 font-lg"></i>
+                                                                                            <a th:href="@{/Article/Modifier/{id}(id=${article.id})}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Modifier <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Modifier la publication</span></h4></a>
+                                                                                        </div>
+
+                                                                                    </div>                                
+                                                                                </div>
+                                                                                <div class="card-body p-0 me-lg-5">
+                                                                                    <a th:href="@{/Article/detail/{id}(id=${article.id})}" class="titre"><h4 class="fw-700 text-grey-900" th:text="${article.titre}"></h4></a>
+                                                                                    <p class="fw-500 text-grey-500 lh-26 font-xssss w-100 mb-2" th:text="${article.getResume()}">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi nulla dolor, ornare at commodo non, feugiat non ni<a href="#" th:href="@{/Article/detail/{id}(id=${article.id})}" th:text="See more" class="fw-600 text-primary ms-2"></a></p>
+                                                                                </div>
+                                                                                <div class="card-body d-block p-0 mb-3">
+                                                                                    <div class="row ps-2 pe-2" th:if="${article.image != null}">
+                                                                                        <div class="col-sm-12 p-1"><a th:href="@{/image/{fileName}(fileName=${article.image})}" data-lightbox="roadtr"><img th:src="@{/image/{fileName}(fileName=${article.image})}" class="rounded-3 w-100" alt="image"></a></div>                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="card-body d-flex p-0">
+                                                                                    <a href="#" th:text="|Score ${article.score}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</a>
+
+                                                                                    <a href=th:text="${article.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss">22 Comment</span></a>
+                                                                                    <a href=th:text="${article.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" th:text="|Score ${article.score}|"></span></a>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                            <!---CHARGEMENT AJAX AU DEFILEMENT-->
+                                                                            <div class="card w-100 text-center shadow-xss rounded-xxl border-0 p-4 mb-3 mt-3">
+                                                                                <div class="snippet mt-2 ms-auto me-auto" data-title=".dot-typing">
+                                                                                    <div class="stage">
+                                                                                        <div class="dot-typing"></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>                             
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>            
+                                                        </div>
+                                                        <!-- main content -->
+
+
+                                                        <!---MENU RESPONSIVE-->
+                                                        <div class="app-footer border-0 shadow-lg bg-primary-gradiant">
+                                                            <a href="index.html" class="nav-content-bttn nav-center"><i class="feather-home"></i></a>
+                                                            <a href="parametres.html" class="nav-content-bttn"><img  th:src="@{/image_user/{fileName}(fileName=${utilisateur.photo})}" alt="user" class="w30 shadow-xss"></a>
+                                                        </div>
+                                                        <!---BAR DE RECHERCHE RESPONSIVE-->
+                                                        <div class="app-header-search">
+                                                            <form action="/Articles/Chercher" class="search-form">
+                                                                <div class="form-group searchbox mb-0 border-0 p-1">
+                                                                    <input type="text" name="sujet"  class="form-control border-0" placeholder="Rechercher...">
+                                                                        <i class="input-icon">
+                                                                            <ion-icon name="search-outline" role="img" class="md hydrated" aria-label="search outline"></ion-icon>
+                                                                        </i>
+                                                                        <a href="#" class="ms-1 mt-1 d-inline-block close searchbox-close">
+                                                                            <i class="ti-close font-xs"></i>
+                                                                        </a>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+
+                                                    </div> 
+
+                                                    </div> 
+
+                                                    <div class="modal bottom side fade" id="Modalstries" tabindex="-1" role="dialog" style=" overflow-y: auto;">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content border-0 bg-transparent">
+                                                                <button type="button" class="close mt-0 position-absolute top--30 right--10" data-dismiss="modal" aria-label="Close"><i class="ti-close text-white font-xssss"></i></button>
+                                                                <div class="modal-body p-0">
+                                                                    <div class="card w-100 border-0 rounded-3 overflow-hidden bg-gradiant-bottom bg-gradiant-top">
+                                                                        <div class="owl-carousel owl-theme dot-style3 story-slider owl-dot-nav nav-none">
+                                                                            <div class="item"><img src="images/story-5.jpg" alt="image"></div>
+                                                                            <div class="item"><img src="images/story-6.jpg" alt="image"></div>
+                                                                            <div class="item"><img src="images/story-7.jpg" alt="image"></div>
+                                                                            <div class="item"><img src="images/story-8.jpg" alt="image"></div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group mt-3 mb-0 p-3 position-absolute bottom-0 z-index-1 w-100">
+                                                                        <input type="text" class="style2-input w-100 bg-transparent border-light-md p-3 pe-5 font-xssss fw-500 text-white" value="Write Comments">               
+                                                                            <span class="feather-send text-white font-md text-white position-absolute" style="bottom: 35px;right:30px;"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                    <script th:src="@{/js/plugin.js}"></script>
+                                                    <script th:src="@{/js/lightbox.js}"></script>
+                                                    <script th:src="@{/js/scripts.js}"></script>
+                                                    <script th:src="@{js/jquery.easypiechart.min.js}"></script> 
+                                                    <script>
+                                                        $('.chart').easyPieChart({
+                                                            easing: 'easeOutElastic',
+                                                            delay: 3000,
+                                                            barColor: '#3498db',
+                                                            trackColor: '#aaa',
+                                                            scaleColor: false,
+                                                            lineWidth: 5,
+                                                            trackWidth: 5,
+                                                            size: 50,
+                                                            lineCap: 'round',
+                                                            onStep: function (from, to, percent) {
+                                                                this.el.children[0].innerHTML = Math.round(percent);
+                                                            }
+                                                        });
+                                                    </script> 
+
+                                                </body>
+
+                                            </html>
