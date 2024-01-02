@@ -138,11 +138,11 @@ public class IndexController {
             modelAndView.addObject("article1", article1);
             modelAndView.addObject("article2", article2);
             modelAndView.addObject("Tous_Les_Articles", Tous_Articles);
-            modelAndView.addObject("TopNotifs", this.notificationService.TopNotifUtilisateur(OnlineUtilisateur));
-            modelAndView.addObject("UtilisateursStory", this.utilisateurService.AllUtilisateursStory());
-            modelAndView.addObject("stories", this.storyService.getStories());
-            modelAndView.addObject("articleTop", this.articleService.getFirst());
-            modelAndView.addObject("taille", Tous_Articles.size() - 2);
+            modelAndView.addObject("TopNotifs", notificationService.TopNotifUtilisateur(OnlineUtilisateur));
+            modelAndView.addObject("UtilisateursStory", utilisateurService.AllUtilisateursStory());
+            modelAndView.addObject("stories", storyService.getStories());
+            modelAndView.addObject("articleTop", articleService.getFirst());
+            modelAndView.addObject("taille", Tous_Articles.size()-2 );
             //JE GARDE CE CODE POUR QUAND JE VAIS AJOUTER DES EVENTS
             //        List<Article> EventslList=this.articleService.getEvents();
             //        modelAndView.addObject("event1", EventslList.get(0));
@@ -156,24 +156,28 @@ public class IndexController {
     }
 
     @GetMapping("/loadMore")
-    public ModelAndView loadMore(@RequestParam(defaultValue = "0") int page) {
+    public Object loadMore(@RequestParam("page") int page) throws InterruptedException {
+        Thread.sleep(1500);
         System.out.println("on est dans le controlleur de loadMore !");
         ModelAndView modelAndView = new ModelAndView("index");
-
+        
         List<Article> Tous_Articles = articleControler.TousArticle();
-        var articleReste = Tous_Articles.subList(2, Tous_Articles.size()); // déclarer la variable articleReste
-        int taille = Math.min(1, articleReste.size()); // renvoie le plus petit entre 1 et le nombre d'articles restants
+        var articlesrestants=Tous_Articles.subList(2, Tous_Articles.size()); // déclarer la variable articleReste
+        List articleReste ;
+        int taille = Math.min(1, articlesrestants.size()); // renvoie le plus petit entre 1 et le nombre d'articles restants
         try {
-            articleReste = Tous_Articles.subList(0 + page * taille, 0 + page * taille + taille); // utilise la taille comme paramètre
+            articleReste = articlesrestants.subList(0 + page * taille, 0 + page * taille + taille); // utilise la taille comme paramètre
             modelAndView.addObject("articles_restants", articleReste);
             modelAndView.setViewName("index :: articleList");
         } catch (Exception e) {
-            if (2 + page * taille + taille > Tous_Articles.size()) {
+            if (page * taille + taille > articlesrestants.size()) {
                 System.out.println("c'est fini !!!!");
+                modelAndView.addObject("articles_restants", null);
+                return null;
             } else {
 
-                articleReste = Tous_Articles.subList(2 + page * taille, 2 + page * taille + taille); // utilise la taille comme paramètre
-                modelAndView.addObject("articles_restants", articleReste);
+                modelAndView.addObject("articles_restants", null);
+                return null;
 
             }
 
