@@ -185,7 +185,7 @@ public class UtilisateurController {
 
     @PostMapping(path = "/Connection")
 
-    public RedirectView Connection(@ModelAttribute AuthentificationDTO authentificationDTO) {
+    public Object Connection(@ModelAttribute AuthentificationDTO authentificationDTO) {
         final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authentificationDTO.getUsername(), authentificationDTO.getPassword())
         );
@@ -195,7 +195,12 @@ public class UtilisateurController {
         }
         is_con = authenticate.isAuthenticated();
         System.out.println("Resultat : " + authenticate.isAuthenticated());
-        return new RedirectView("/");
+        if (!is_con) {
+            return new ModelAndView("BadPassword");
+        } else {
+            return new RedirectView("/");
+        }
+        
     }
 
     public UtilisateurController(AuthenticationManager authenticationManager, UtilisateurService utilisateurService) {
