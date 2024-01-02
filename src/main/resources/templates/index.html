@@ -402,7 +402,7 @@
                                                                     <a th:href="@{/Utilisateur/detail/{id}(id=${article.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
 
                                                                     <!-- Ajouter un OU à la condition Thymeleaf -->
-                                                                    <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR || article.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article2.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                                    <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR || article.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
                                                                     <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article.id}|">
                                                                         <div class="card-body p-0 d-flex">
                                                                             <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
