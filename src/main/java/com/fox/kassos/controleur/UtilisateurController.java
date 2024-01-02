@@ -194,10 +194,12 @@ public class UtilisateurController {
             jeton = this.jwtService.generate(authentificationDTO.getUsername()).get("bearer");
         }
         is_con = authenticate.isAuthenticated();
-        System.out.println("Resultat : " + authenticate.isAuthenticated());
-        if (!is_con) {
+       
+        if (!authenticate.isAuthenticated()) {
+             System.out.println("Resultat : " + authenticate.isAuthenticated());
             return new ModelAndView("BadPassword");
         } else {
+             System.out.println("Resultat : " + authenticate.isAuthenticated());
             return new RedirectView("/");
         }
         
