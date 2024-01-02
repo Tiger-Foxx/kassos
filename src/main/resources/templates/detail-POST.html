@@ -93,7 +93,7 @@
                                     <div class="card-body d-flex p-0">
                                         <a href="#" th:text="|Score ${article.score}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</a>
 
-                                        <a href=th:text="${article.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss">22 Comment</span></a>
+                                        <a href=th:text="${article.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" id="Com">22 Comment</span></a>
                                         <a href=th:text="${article.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" th:text="|Score ${article.score}|"></span></a>
                                     </div>
                                 </div>
@@ -122,12 +122,14 @@
                                             //alert("ok");
                                         }
                                     }
+                                    
+                                    
                                 </script>
                                 <!--COMMENTAIRE SUR LE POST-->
-                                <div th:each="commentaire : ${commentaires}" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0" style="margin-top: 10px;">
+                                <div th:each="commentaire : ${commentaires}" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0" name="Commentaire" style="margin-top: 10px;">
                                     <div class="card-body p-0 d-flex">
                                         <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${commentaire.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
-                                        <h4 class="fw-700 text-grey-900 font-xssss mt-1" ><span th:text="${commentaire.utilisateur.nom}">Anthony Daugloi </span> <span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500" th:text="|le ${#dates.format(commentaire.utilisateur.date, 'dd-MM-yyyy HH:mm')}|" >2 hour ago</span></h4>
+                                        <a th:href="@{/Utilisateur/detail/{id}(id=${commentaire.utilisateur.id})}"><h4 class="fw-700 text-grey-900 font-xssss mt-1" ><span th:text="${commentaire.utilisateur.nom}">Anthony Daugloi </span> <span class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500" th:text="|le ${#dates.format(commentaire.utilisateur.date, 'dd-MM-yyyy HH:mm')}|" >2 hour ago</span></h4></a>
                                         <a href="#" class="ms-auto" id="dropdownMenu4" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
                                         <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" aria-labelledby="dropdownMenu4">
                                             <div class="card-body p-0 d-flex">
@@ -143,6 +145,16 @@
                                     </div>
                                 </div>
                                 <!--COMMENTAIRE SUR LE POST-->
+                                
+                                 <script>
+
+                                    Comlist=document.getElementsByName("Commentaire");
+                               
+                                    nb=Comlist.length;
+                                    texte = nb + " Commentaires";
+                                    document.getElementById("Com").innerText=texte;
+                                    
+                                </script>
 
                                 <!---CHARGEMENT AJAX AU DEFILEMENT-->
                                 <div class="card w-100 text-center shadow-xss rounded-xxl border-0 p-4 mb-3 mt-3">

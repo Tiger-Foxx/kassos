@@ -6,10 +6,12 @@ package com.fox.kassos.controleur;
 
 import com.fox.kassos.dto.AuthentificationDTO;
 import com.fox.kassos.entites.Article;
+import com.fox.kassos.entites.Theme;
 import com.fox.kassos.entites.Utilisateur;
 import com.fox.kassos.service.ArticleService;
 import com.fox.kassos.service.NotificationService;
 import com.fox.kassos.service.StoryService;
+import com.fox.kassos.service.ThemeService;
 import com.fox.kassos.service.UtilisateurService;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,18 @@ import org.springframework.web.servlet.view.RedirectView;
  */
 @RestController
 public class IndexController {
+
+    @Autowired
+    private ThemeService themeService;
+
+    public IndexController(ThemeService themeService, StoryService storyService, NotificationService notificationService, UtilisateurService utilisateurService, ArticleControler articleControler, ArticleService articleService) {
+        this.themeService = themeService;
+        this.storyService = storyService;
+        this.notificationService = notificationService;
+        this.utilisateurService = utilisateurService;
+        this.articleControler = articleControler;
+        this.articleService = articleService;
+    }
 
     @Autowired
     private StoryService storyService;
@@ -112,11 +126,13 @@ public class IndexController {
             Utilisateur OnlineUtilisateur = (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             OnlineUtilisateur.describe();
             modelAndView.addObject("CurrentUser", OnlineUtilisateur);
-            
+
             List<Article> Tous_Articles = articleControler.TousArticle();
             Article article1 = Tous_Articles.get(0);
             Article article2 = Tous_Articles.get(1);
-            int nb= Tous_Articles.size()/2>10?7:Tous_Articles.size()/2;
+            int nb = Tous_Articles.size() / 2 > 10 ? 7 : Tous_Articles.size() / 2;
+            List<Theme> themes = this.themeService.getAllThemes();
+            modelAndView.addObject("themes", themes);
             modelAndView.addObject("articles_propose", articleService.getRandomArticles(nb));
             modelAndView.addObject("utilisateurs_propose", utilisateurService.getRandomUtilisateurs(7));
             modelAndView.addObject("article1", article1);
@@ -148,21 +164,20 @@ public class IndexController {
         var articleReste = Tous_Articles.subList(2, Tous_Articles.size()); // déclarer la variable articleReste
         int taille = Math.min(1, articleReste.size()); // renvoie le plus petit entre 1 et le nombre d'articles restants
         try {
-        articleReste = Tous_Articles.subList(0 + page * taille, 0 + page * taille + taille); // utilise la taille comme paramètre
-         modelAndView.addObject("articles_restants", articleReste);
-        modelAndView.setViewName("index :: articleList");
+            articleReste = Tous_Articles.subList(0 + page * taille, 0 + page * taille + taille); // utilise la taille comme paramètre
+            modelAndView.addObject("articles_restants", articleReste);
+            modelAndView.setViewName("index :: articleList");
         } catch (Exception e) {
-            if (2 + page * taille + taille>Tous_Articles.size()) {
+            if (2 + page * taille + taille > Tous_Articles.size()) {
                 System.out.println("c'est fini !!!!");
             } else {
-                
-                 articleReste = Tous_Articles.subList(2 + page * taille, 2 + page * taille + taille); // utilise la taille comme paramètre
-                    modelAndView.addObject("articles_restants", articleReste);
-                  
+
+                articleReste = Tous_Articles.subList(2 + page * taille, 2 + page * taille + taille); // utilise la taille comme paramètre
+                modelAndView.addObject("articles_restants", articleReste);
+
             }
-           
+
         }
-        
 
         return modelAndView;
     }
@@ -227,6 +242,8 @@ public class IndexController {
         Article article = this.articleService.detailArticle(id);
         System.err.println("VOILA ARTICLE " + article.toString());
         ModelAndView modelAndView = new ModelAndView();
+        List<Theme> themes = this.themeService.getAllThemes();
+        modelAndView.addObject("themes", themes);
         modelAndView.setViewName("Modifier-Article");
         modelAndView.addObject("article", article);
         modelAndView.addObject("TopNotifs", this.notificationService.TopNotifUtilisateur(utilisateur));
@@ -235,9 +252,9 @@ public class IndexController {
 
         return modelAndView;
     }
-    
+
     @GetMapping(path = "/testPass")
-    public String GetTest(){
+    public String GetTest() {
         return "ok lka page n'est pas blanche ca renvoie bien vers ce controlleur";
     }
 

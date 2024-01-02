@@ -15,6 +15,7 @@ import com.fox.kassos.repository.UtilisateurRepository;
 import com.fox.kassos.service.ArticleService;
 import com.fox.kassos.service.CommentaireService;
 import com.fox.kassos.service.NotificationService;
+import com.fox.kassos.service.ThemeService;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,6 +60,18 @@ import org.springframework.web.servlet.view.RedirectView;
 
 public class ArticleControler {
 
+    @Autowired
+    private ThemeService themeService;
+
+    public ArticleControler(ThemeService themeService, NotificationService notificationService, CommentaireService commentaireService, ArticleService articleService, UtilisateurController utilisateurController) {
+        this.themeService = themeService;
+        this.notificationService = notificationService;
+        this.commentaireService = commentaireService;
+        this.articleService = articleService;
+        this.utilisateurController = utilisateurController;
+    }
+    
+    
     @Autowired
     private NotificationService notificationService;
 
