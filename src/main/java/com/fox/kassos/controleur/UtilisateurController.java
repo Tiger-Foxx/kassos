@@ -32,6 +32,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,7 +63,7 @@ public class UtilisateurController {
         this.authenticationManager = authenticationManager;
         this.utilisateurService = utilisateurService;
     }
-    
+
     public static String jeton;
     public static boolean is_con = false;
     @Autowired
@@ -186,23 +187,24 @@ public class UtilisateurController {
     @PostMapping(path = "/Connection")
 
     public Object Connection(@ModelAttribute AuthentificationDTO authentificationDTO) {
-        final Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authentificationDTO.getUsername(), authentificationDTO.getPassword())
-        );
-
-        if (authenticate.isAuthenticated()) {
-            jeton = this.jwtService.generate(authentificationDTO.getUsername()).get("bearer");
-        }
-        is_con = authenticate.isAuthenticated();
-       
-        if (!authenticate.isAuthenticated()) {
-             System.out.println("Resultat : " + authenticate.isAuthenticated());
-            return new ModelAndView("BadPassword");
-        } else {
-             System.out.println("Resultat : " + authenticate.isAuthenticated());
+        System.out.println("je suis ici dans en haut connexion! !");
+        try {
+            final Authentication authenticate = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authentificationDTO.getUsername(), authentificationDTO.getPassword())
+            );
+            
+            if (authenticate.isAuthenticated()) {
+                jeton = this.jwtService.generate(authentificationDTO.getUsername()).get("bearer");
+            }
+            is_con = authenticate.isAuthenticated();
+            System.out.println("je suis ici dans connexion! !");
+            
+            System.out.println("Resultat : " + authenticate.isAuthenticated());
             return new RedirectView("/");
+        } catch (AuthenticationException authenticationException) {
+            return new ModelAndView("BadPassword");
         }
-        
+
     }
 
     public UtilisateurController(AuthenticationManager authenticationManager, UtilisateurService utilisateurService) {
@@ -236,81 +238,80 @@ public class UtilisateurController {
             return new ErrorController().GetErrView(message);
         }
     }
-    
-      @PostMapping("/Utilisateur/Modifier")
-    public Object ModifierArticle(@Valid @ModelAttribute Utilisateur utilisateur, @RequestParam("photoUser") MultipartFile file){
+
+    @PostMapping("/Utilisateur/Modifier")
+    public Object ModifierArticle(@Valid @ModelAttribute Utilisateur utilisateur, @RequestParam("photoUser") MultipartFile file) {
         // vérifier si le fichier est vide
         Utilisateur utilisateurCourant = (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         KassosMessage message;
         if (file.isEmpty()) {
             utilisateur.setPhoto(utilisateurCourant.getPhoto());
-        }
-        else{
-             // générer un nom unique pour le fichier
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        // créer le chemin du fichier
-        Path path = Paths.get(UPLOAD_DIR + fileName);
-        // copier le fichier dans le dossier
-        try {
-            file.transferTo(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-           message=new KassosMessage("UNE ERREUR FATALE", "Il semblerait que tu aies Enclanche une erreur Fatale", "Verifie que tu as correctement rempli le formulaire");
-           return new ErrorController().GetErrView(message);
-        }
-        // définir le chemin de l'image dans l'article
-        
-        utilisateur.setPhoto(fileName);
-        
+        } else {
+            // générer un nom unique pour le fichier
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            // créer le chemin du fichier
+            Path path = Paths.get(UPLOAD_DIR + fileName);
+            // copier le fichier dans le dossier
+            try {
+                file.transferTo(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+                message = new KassosMessage("UNE ERREUR FATALE", "Il semblerait que tu aies Enclanche une erreur Fatale", "Verifie que tu as correctement rempli le formulaire");
+                return new ErrorController().GetErrView(message);
+            }
+            // définir le chemin de l'image dans l'article
+
+            utilisateur.setPhoto(fileName);
+
         }
         // ici c'est plus securise car maintenant au lieu de prendre utilisateur i dans le formulaire je vais directement prendre celui qui est Connecte comme ca quelqu'un ne pourra pas poster pour un autre
         utilisateur.setId(utilisateurCourant.getId());
         utilisateur.setPassword(utilisateurCourant.getPassword());
         this.utilisateurService.modifier(utilisateur);
-        
-        RedirectView redirectView=new RedirectView("/Utilisateur/detail/{id}");
+
+        RedirectView redirectView = new RedirectView("/Utilisateur/detail/{id}");
         redirectView.addStaticAttribute("id", utilisateur.getId());
         return redirectView;
     }
-    
+
     @GetMapping(path = "/Utilisateur/detail/{id}")
-    public ModelAndView detail(@PathVariable("id") int id){
-        ModelAndView modelAndView=new ModelAndView();
+    public ModelAndView detail(@PathVariable("id") int id) {
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("user-page");
-        Utilisateur utilisateur = this.utilisateurService.UnUtilisateur(id) ;
-        ArrayList<Article> articles=(ArrayList<Article>) this.articleService.ArticleUtilisateur(utilisateur);
+        Utilisateur utilisateur = this.utilisateurService.UnUtilisateur(id);
+        ArrayList<Article> articles = (ArrayList<Article>) this.articleService.ArticleUtilisateur(utilisateur);
         Utilisateur utilisateurCourant = (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelAndView.addObject("utilisateur",utilisateur);
-        modelAndView.addObject("articles",articles );
-        modelAndView.addObject("CurrentUser",utilisateurCourant);
-               modelAndView.addObject("TopNotifs", this.notificationService.TopNotifUtilisateur(utilisateurCourant));
+        modelAndView.addObject("utilisateur", utilisateur);
+        modelAndView.addObject("articles", articles);
+        modelAndView.addObject("CurrentUser", utilisateurCourant);
+        modelAndView.addObject("TopNotifs", this.notificationService.TopNotifUtilisateur(utilisateurCourant));
 
         modelAndView.addObject("compte", 3);
-        KassosMessage message=new KassosMessage("PAS DE CORRESPONDANCE", "OUPS IL N'Y A RIEN ICI ", "IL SEMBLERAIT QUE CE QUE TU CHERCHES N'EXISTE PAS ");
+        KassosMessage message = new KassosMessage("PAS DE CORRESPONDANCE", "OUPS IL N'Y A RIEN ICI ", "IL SEMBLERAIT QUE CE QUE TU CHERCHES N'EXISTE PAS ");
         if (utilisateur.equals(null)) {
             return new ErrorController().GetErrView(message);
         } else {
-            return  modelAndView;
+            return modelAndView;
         }
-        
+
     }
-    
-    @GetMapping(path ="/Me")
-    public RedirectView MView(){
+
+    @GetMapping(path = "/Me")
+    public RedirectView MView() {
         Utilisateur utilisateurCourant = (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        int id =utilisateurCourant.getId();
-        return  new RedirectView("/Utilisateur/detail/{"+id+"}");
-}
-    
-   @GetMapping(path = "/Membres")
+        int id = utilisateurCourant.getId();
+        return new RedirectView("/Utilisateur/detail/{" + id + "}");
+    }
+
+    @GetMapping(path = "/Membres")
     public ModelAndView getMembersPage() {
 
         ModelAndView modelAndView = new ModelAndView("Membres");
         modelAndView.setViewName("Membres");
-        modelAndView.addObject("utilisateurs",this.utilisateurService.AllUtilisateurs());
-        Utilisateur utilisateur= (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        modelAndView.addObject("CurrentUser",utilisateur );
-        
+        modelAndView.addObject("utilisateurs", this.utilisateurService.AllUtilisateurs());
+        Utilisateur utilisateur = (Utilisateur) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        modelAndView.addObject("CurrentUser", utilisateur);
+
         return modelAndView;
     }
 

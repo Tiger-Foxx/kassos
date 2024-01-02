@@ -26,7 +26,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
 import static org.springframework.web.server.adapter.WebHttpHandlerBuilder.applicationContext;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 
@@ -36,11 +39,12 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
  */
 @Configuration
 @EnableWebSecurity()
-public class ConfigurationSecuriteApplication  implements ApplicationContextAware{
+public class ConfigurationSecuriteApplication implements ApplicationContextAware {
+
     @Autowired
-    private  BCryptPasswordEncoder passwordEncoder;
-   @Autowired
-   private JwtFilter jwtFilter;
+    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtFilter jwtFilter;
 
     public ConfigurationSecuriteApplication(BCryptPasswordEncoder passwordEncoder, JwtFilter jwtFilter) {
         this.passwordEncoder = passwordEncoder;
@@ -67,58 +71,54 @@ public class ConfigurationSecuriteApplication  implements ApplicationContextAwar
                                 .requestMatchers(POST, "/Connection").permitAll()
                                 .requestMatchers(GET, "/Connection").permitAll()
                                 .requestMatchers("/error").permitAll()
-                                .requestMatchers( "/testPass").permitAll()
-                                .requestMatchers( "/css/**").permitAll()
-                                .requestMatchers( "/js/**").permitAll()
-                                .requestMatchers( "/fonts/**").permitAll()
-                                .requestMatchers( "/images/**").permitAll()
-                                .requestMatchers( "/favicon.ico/**").permitAll()
-                                .requestMatchers(  "/static.vendor.owl-carousel.css/**").permitAll()
+                                .requestMatchers("/testPass").permitAll()
+                                .requestMatchers("/css/**").permitAll()
+                                .requestMatchers("/js/**").permitAll()
+                                .requestMatchers("/fonts/**").permitAll()
+                                .requestMatchers("/images/**").permitAll()
+                                .requestMatchers("/favicon.ico/**").permitAll()
+                                .requestMatchers("/static.vendor.owl-carousel.css/**").permitAll()
                                 .anyRequest().authenticated()
-                                
-                        
                 )
-                .sessionManagement( httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS )
+                .rememberMe((remember) -> remember
+                 .userDetailsService(new UtilisateurService())
+                .key("8f3c4b17d14f79c7897a9a7b4b6ad7a8")
+                .tokenValiditySeconds(86400))
+                .sessionManagement(httpSecuritySessionManagementConfigurer
+                        -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                 .build();
+                .build();
     }
-    
- 
-    
-   
+
+
     @Bean
-    public AuthenticationManager authenticationManager (AuthenticationConfiguration authenticationConfiguration) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    
-    
-    
-    @Bean 
-      public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService){
-        DaoAuthenticationProvider daoAuthenticationProvider= new DaoAuthenticationProvider();
+
+    @Bean
+    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(this.passwordEncoder);
         return daoAuthenticationProvider;
     }
-      
-      
+
     private ApplicationContext applicationContext;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
-    }  
-     @Bean
-public SpringResourceTemplateResolver templateResolver(){
-    SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-    templateResolver.setApplicationContext(applicationContext);
-    templateResolver.setPrefix("classpath:/templates/");
-    templateResolver.setSuffix(".html");
-    return templateResolver;
-}
+    }
 
-   
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setApplicationContext(applicationContext);
+        templateResolver.setPrefix("classpath:/templates/");
+        templateResolver.setSuffix(".html");
+        return templateResolver;
+    }
 
 }
