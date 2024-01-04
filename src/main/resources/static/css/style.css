@@ -13885,6 +13885,10 @@ select.sort{
     }
 }
 @media (max-width:768px){
+    
+    #partiesInfos{
+        display: none;
+    }
     .col-xs-6{
         flex:0 0 50%;
         max-width:50%
@@ -13906,6 +13910,7 @@ select.sort{
         max-width:75%
     }
     .col-xs-4{
+       
         flex:0 0 33.3333333333%;
         max-width:33.3333333333%
     }

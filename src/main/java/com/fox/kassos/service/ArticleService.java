@@ -10,6 +10,7 @@ import com.fox.kassos.entites.Utilisateur;
 import com.fox.kassos.repository.ArticleRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class ArticleService {
     /*@Autowired // je dois relier le repository au service
    ClientRepository clientRepository;*/
     // voila la bonne facon en passant par le constructeur
+    @Autowired
     private ArticleRepository articleRepository;
 
     public ArticleService(ArticleRepository articleRepository) {

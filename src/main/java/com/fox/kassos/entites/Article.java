@@ -11,9 +11,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 /**
@@ -56,7 +58,7 @@ public class Article {
     // PERSIST signifie sauvegarde le client, recupere sa clé primmaire et injecte la dans la clé etrangere du sentiment avant de le sauvegarder
     // MERGE signifie que si l client existe deja on va juste recuperer sa clé et injecter comme clé etrangere du sentiment
     // @ManyToOne(cascade = {PERSIST , MERGE})
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "id_utilisateur") // pas necessaire l'orsque tu nomme bien CLIENT_ID
    public Utilisateur utilisateur;
 
@@ -160,5 +162,14 @@ public String getResume() {
     return this.texte;
   }
 }
+@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "article")
+private List<Commentaire> commentaires;
 
+    public List<Commentaire> getCommentaires() {
+        return commentaires;
+    }
+
+    public void setCommentaires(List<Commentaire> commentaires) {
+        this.commentaires = commentaires;
+    }
 }

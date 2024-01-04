@@ -61,6 +61,16 @@
                                     <h1 th:text="|Theme :  ' ${article.theme} '| ">Détails du Post : " Etre Une Femme "</h1>
                                 </div>
 
+                                <script>
+                                    function supprimer(id) {
+
+                                        if (confirm("VOULEZ VOUS VRAIMENT EFFECTUER CETTE SUPPRESSION ?")) {
+                                            ID = "link" + id;
+                                            document.getElementById(ID).click();
+                                            //alert("ok");
+                                        }
+                                    }
+                                </script>
                                 <div class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0">
                                     <div  class="card-body p-0 d-flex">
                                         <figure class="avatar me-3"><img style="width: 45px;height: 45px;" th:src="@{/image_user/{fileName}(fileName=${article.utilisateur.photo})}" alt="image" class="shadow-sm rounded-circle w45"></figure>
@@ -71,12 +81,14 @@
                                         <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article.id}|">
                                             <div class="card-body p-0 d-flex">
                                                 <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
-                                                <a href=th:text="${article.id}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Supprimer <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Supprimer la publication</span></h4></a>
+                                                <a href="#" th:id="|${article.id}|" onclick="supprimer(this.id)" ><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Supprimer <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Supprimer la publication</span></h4></a>
                                             </div>
+                                            <a th:href="@{/Article/Delete/{id}(id=${article.id})}" th:id="|link${article.id}|" hidden="true"></a>
+
 
                                             <div class="card-body p-0 d-flex mt-2">
                                                 <i class="feather-alert-octagon text-grey-500 me-3 font-lg"></i>
-                                                <a  th:href="@{/Article/Modifier/{id}(id=${article.id})}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Modifier <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Modifier la publication</span></h4></a>
+                                                <a th:href="@{/Article/Modifier/{id}(id=${article.id})}"><h4 class="fw-600 text-grey-900 font-xssss mt-0 me-4">Modifier <span class="d-block font-xsssss fw-500 mt-1 lh-3 text-grey-500">Modifier la publication</span></h4></a>
                                             </div>
 
                                         </div>                                
@@ -122,8 +134,8 @@
                                             //alert("ok");
                                         }
                                     }
-                                    
-                                    
+
+
                                 </script>
                                 <!--COMMENTAIRE SUR LE POST-->
                                 <div th:each="commentaire : ${commentaires}" class="card w-100 shadow-xss rounded-xxl border-0 p-4 mb-0" name="Commentaire" style="margin-top: 10px;">
@@ -145,15 +157,15 @@
                                     </div>
                                 </div>
                                 <!--COMMENTAIRE SUR LE POST-->
-                                
-                                 <script>
 
-                                    Comlist=document.getElementsByName("Commentaire");
-                               
-                                    nb=Comlist.length;
+                                <script>
+
+                                    Comlist = document.getElementsByName("Commentaire");
+
+                                    nb = Comlist.length;
                                     texte = nb + " Commentaires";
-                                    document.getElementById("Com").innerText=texte;
-                                    
+                                    document.getElementById("Com").innerText = texte;
+
                                 </script>
 
                                 <!---CHARGEMENT AJAX AU DEFILEMENT-->

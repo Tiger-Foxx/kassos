@@ -76,7 +76,7 @@
                                             <input type="file" accept="image/*" name="image_story" id="btnImage">
                                         </form>
                                         <script>
-
+                                            
                                             // Modifier le code JavaScript
                                             formulaireStory = document.getElementById("formulaireStory");
                                             bouton = document.getElementById("btnImage");
@@ -92,7 +92,7 @@
                                                     }
                                                 });
                                             }
-
+                                            
                                         </script>
                                         <div class="item" th:each="utilisateur : ${UtilisateursStory}">
                                             <div data-bs-toggle="modal" th:data-bs-target="|#ModalStory${utilisateur.id}|" class="card w125 h200 d-block border-0 shadow-xss rounded-xxxl bg-gradiant-bottom overflow-hidden cursor-pointer mb-3 mt-3" style="background-image: url(images/s-5.jpg);">
@@ -153,9 +153,9 @@
                                                                 } else {
                                                                     themeInput.value = choosed.innerText;
                                                                 }
-
+                                                                
                                                                 alert("theme : " + themeInput.value);
-
+                                                                
                                                             }
                                                         </script>
                                                         <div class="card-body d-flex p-0 mt-0">
@@ -193,7 +193,7 @@
                                                                     <a th:href="@{/Article/Delete/{id}(id=${article1.id})}" th:id="|link${article1.id}|" hidden="true"></a>
                                                                     <script>
                                                                         function supprimer(id) {
-
+                                                                            
                                                                             if (confirm("VOULEZ VOUS VRAIMENT EFFECTUER CETTE SUPPRESSION ?")) {
                                                                                 ID = "link" + id;
                                                                                 document.getElementById(ID).click();
@@ -225,8 +225,8 @@
                                                             <div class="card-body d-flex p-0">
                                                                 <a href="#" th:text="|theme :  ${article1.theme}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i  class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>2.8K Like</a>
 
-                                                                <a href=th:text="${article1.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="|Score ${article1.score}|">22 Comment</span></a>
-                                                                <a href=th:text="${article1.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
+                                                                <a th:href="@{/Article/detail/{id}(id=${article1.id})}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span th:text="| ${article1.getCommentaires.size()} Commentaires|"></span></a>
+                                                                <a th:href="@{/Article/detail/{id}(id=${article1.id})}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
                                                             </div>
                                                         </div>
 
@@ -292,8 +292,8 @@
                                                             <div class="card-body d-flex p-0">
                                                                 <a href="#" th:text="|theme:  ${article2.theme}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i  class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>Partager</a>
 
-                                                                <a th:href="${article2.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="|Score ${article2.score}|">22 Comment</span></a>
-                                                                <a th:href="${article2.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
+                                                                <a th:href="@{/Article/detail/{id}(id=${article2.id})}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span th:text="| ${article2.getCommentaires.size()} Commentaires|"></span></a>
+                                                                <a th:href="@{/Article/detail/{id}(id=${article2.id})}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
                                                             </div>
                                                         </div>
 
@@ -316,70 +316,72 @@
                                                         <input type="number" hidden="true" th:value="${taille}" id="taille">
                                                             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                                             <script>
-                                                                                var finish = false;
-                                                                                $(document).ready(function () {
-                                                                                   
-                                                                                    page = 0;
+                                                                            var finish = false;
+                                                                            $(document).ready(function () {
+                                                                            
+                                                                                page = 0;
                                                                                     // ajouter la variable finish
                                                                                     // Cacher l'effet de chargement au début
                                                                                     $("#charge").hide();
-                                                                                    $(window).scroll(function () {
-                                                                                      
-                                                                                        // Envoyer une requête AJAX seulement si il y a encore des données à charger
-    //                                                                            alert("liste Article :"document.getElementsByName("listeArticle").length);
-    //                                                                            alert("taille-1: "document.getElementById("taille").value-1);
-                                                                                        if($(window).width() < 800){
-                                                                                            alert("ok");
-                                                                                            //SUR TELEPHONE
-                                                                                         if (document.getElementsByName("listeArticle").length < document.getElementById("taille").value & !finish) {
+                                                                                if(true) {
+                                                                                        $(window).scroll(function () {
 
-                                                                                                loadMore(page);
-                                                                                                page++;
-                                                                                            }
-                                                                                        }
-                                                                                        else{
-                                                                                            if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
-                                                                                            if (document.getElementsByName("listeArticle").length < document.getElementById("taille").value & !finish) {
+                                                                                                if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+                                                                                                if (document.getElementsByName("listeArticle").length < document.getElementById("taille").value & !finish) {
 
-                                                                                                loadMore(page);
-                                                                                                page++;
-                                                                                            }
+                                                                                                        loadMore(page);
+                                                                                                                page++;
+                                                                                                }
+
+                                                                                                }
+
+                                                                                        } );
+                                                                                        $(window).on("touchmove",function () {
+                                                                                                if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+                                                                                                if (document.getElementsByName("listeArticle").length < document.getElementById("taille").value & !finish) {
+
+                                                                                                        loadMore(page);
+                                                                                                                page++;
+                                                                                                }
+
+                                                                                                }
+
+                                                                                        } );
+                                                                                        
+                                                                                  } else {
+                                                                                        
+                                                                            }
+                                                                           
+                                                                            }
+                                                                            );
+                                                                            
+                                                                            function loadMore(page) {
+                                                                                // Afficher l'effet de chargement pendant la requête
+                                                                                $("#charge").show();
+                                                                                $.ajax({
+                                                                                    url: "/loadMore?page=" + page,
+                                                                                    type: "get",
+                                                                                    success: function (response) {
+                                                                                        if (response && response != null) {
+                                                                                            console.log(response);
+                                                                                            $("#articleList").append(response);
+                                                                                        } else {
+                                                                                            
+                                                                                            // S'il n'y a plus de données à renvoyer, passer la variable finish à true
+                                                                                            finish = true;
+                                                                                            $("#charge").show();
                                                                                         }
+                                                                                        // Cacher l'effet de chargement après la requête
+                                                                                        if (!finish) {
+                                                                                            $("#charge").hide();
                                                                                         }
                                                                                         
-                                                                                        
-                                                                                        
-
-                                                                                    });
+                                                                                    },
+                                                                                    error: function (xhr) {
+                                                                                        // handle error
+                                                                                    }
                                                                                 });
-
-                                                                                function loadMore(page) {
-                                                                                    // Afficher l'effet de chargement pendant la requête
-                                                                                    $("#charge").show();
-                                                                                    $.ajax({
-                                                                                        url: "/loadMore?page=" + page,
-                                                                                        type: "get",
-                                                                                        success: function (response) {
-                                                                                            if (response && response != null) {
-                                                                                                console.log(response);
-                                                                                                $("#articleList").append(response);
-                                                                                            } else {
-
-                                                                                                // S'il n'y a plus de données à renvoyer, passer la variable finish à true
-                                                                                                finish = true;
-                                                                                                $("#charge").show();
-                                                                                            }
-                                                                                            // Cacher l'effet de chargement après la requête
-                                                                                            if (!finish) {
-                                                                                                $("#charge").hide();
-                                                                                            }
-
-                                                                                        },
-                                                                                        error: function (xhr) {
-                                                                                            // handle error
-                                                                                        }
-                                                                                    });
-                                                                                }
+                                                                            }
                                                             </script>
 
 
@@ -392,7 +394,8 @@
                                                                         <a th:href="@{/Utilisateur/detail/{id}(id=${article.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
 
                                                                         <!-- Ajouter un OU à la condition Thymeleaf -->
-                                                                        <a th:if="|${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR or article.utilisateur.id == CurrentUser.id}|" href="#" class="ms-auto" th:id="|dropdownMenu${article.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                                        <a th:if="|${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR}|" href="#" class="ms-auto" th:id="|dropdownMenu${article.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+
                                                                         <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article.id}|">
                                                                             <div class="card-body p-0 d-flex">
                                                                                 <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>
@@ -425,8 +428,8 @@
                                                                     <div class="card-body d-flex p-0">
                                                                         <a href="#" th:text="|theme:  ${article.theme}|" class="emoji-bttn d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss me-2"><i class="feather-thumbs-up text-white bg-primary-gradiant me-1 btn-round-xs font-xss"></i> <i  class="feather-heart text-white bg-red-gradiant me-2 btn-round-xs font-xss"></i>Partager</a>
 
-                                                                        <a th:href="${article.id}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="|Score ${article.score}|">22 Comment</span></a>
-                                                                        <a th:href="${article.id}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
+                                                                        <a th:href="@{/Article/detail/{id}(id=${article.id})}" class="d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-message-circle text-dark text-grey-900 btn-round-sm font-lg"></i><span class="d-none-xss" th:text="| ${article.getCommentaires.size()} Commentaires|">22 Comment</span></a>
+                                                                        <a th:href="@{/Article/detail/{id}(id=${article.id})}" class="ms-auto d-flex align-items-center fw-600 text-grey-900 text-dark lh-26 font-xssss"><i class="feather-share-2 text-grey-900 text-dark btn-round-sm font-lg"></i><span class="d-none-xs" >Partager</span></a>
                                                                     </div>
                                                                 </div>
 
@@ -441,7 +444,7 @@
                                                             </div>
 
                                                             </div>               
-                                                            <div class="col-xl-4 col-xxl-3 col-lg-4 ps-lg-0">
+                                                            <div class="col-xl-4 col-xxl-3 col-lg-4 ps-lg-0" id="partiesInfos">
                                                                 <div class="card w-100 shadow-xss rounded-xxl border-0 mb-3">
                                                                     <div class="card-body d-flex align-items-center p-4">
                                                                         <h4 class="fw-700 mb-0 font-xssss text-grey-900">Profils Suggérés</h4>
@@ -449,7 +452,7 @@
                                                                     </div>
                                                                     <script>
                                                                         function supprimer2(id) {
-
+                                                                            
                                                                             if (confirm("VOULEZ VOUS VRAIMENT EFFECTUER CETTE SUPPRESSION ? ")) {
                                                                                 ID = "link" + id;
                                                                                 document.getElementById(ID).click();
