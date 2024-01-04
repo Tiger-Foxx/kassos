@@ -80,10 +80,7 @@ public class ConfigurationSecuriteApplication implements ApplicationContextAware
                                 .requestMatchers("/static.vendor.owl-carousel.css/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .rememberMe((remember) -> remember
-                 .userDetailsService(new UtilisateurService())
-                .key("8f3c4b17d14f79c7897a9a7b4b6ad7a8")
-                .tokenValiditySeconds(86400))
+                
                 .sessionManagement(httpSecuritySessionManagementConfigurer
                         -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )

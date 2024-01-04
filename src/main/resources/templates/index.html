@@ -318,22 +318,37 @@
                                                             <script>
                                                                                 var finish = false;
                                                                                 $(document).ready(function () {
+                                                                                   
                                                                                     page = 0;
                                                                                     // ajouter la variable finish
                                                                                     // Cacher l'effet de chargement au début
                                                                                     $("#charge").hide();
                                                                                     $(window).scroll(function () {
+                                                                                      
                                                                                         // Envoyer une requête AJAX seulement si il y a encore des données à charger
     //                                                                            alert("liste Article :"document.getElementsByName("listeArticle").length);
     //                                                                            alert("taille-1: "document.getElementById("taille").value-1);
+                                                                                        if($(window).width() < 800){
+                                                                                            alert("ok");
+                                                                                            //SUR TELEPHONE
+                                                                                         if (document.getElementsByName("listeArticle").length < document.getElementById("taille").value & !finish) {
 
-                                                                                        if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+                                                                                                loadMore(page);
+                                                                                                page++;
+                                                                                            }
+                                                                                        }
+                                                                                        else{
+                                                                                            if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
                                                                                             if (document.getElementsByName("listeArticle").length < document.getElementById("taille").value & !finish) {
 
                                                                                                 loadMore(page);
                                                                                                 page++;
                                                                                             }
                                                                                         }
+                                                                                        }
+                                                                                        
+                                                                                        
+                                                                                        
 
                                                                                     });
                                                                                 });
@@ -377,7 +392,7 @@
                                                                         <a th:href="@{/Utilisateur/detail/{id}(id=${article.utilisateur.id})}" ><h4  class="fw-700 text-grey-900 font-xssss mt-1"><span th:text="|${article.utilisateur.nom}|">Anthony Daugloi</span> <span th:text="|le ${#dates.format(article.date, 'dd-MM-yyyy HH:mm')}|" class="d-block font-xssss fw-500 mt-1 lh-3 text-grey-500">2 hour ago</span></h4></a>     
 
                                                                         <!-- Ajouter un OU à la condition Thymeleaf -->
-                                                                        <a th:if="${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR || article.utilisateur.id == CurrentUser.id}" href="#" class="ms-auto" th:id="|dropdownMenu${article.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
+                                                                        <a th:if="|${CurrentUser.role.libelle == T(com.fox.kassos.Tools.TypeDeRole).ADMINISTRATEUR or article.utilisateur.id == CurrentUser.id}|" href="#" class="ms-auto" th:id="|dropdownMenu${article.id}|" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti-more-alt text-grey-900 btn-round-md bg-greylight font-xss"></i></a>
                                                                         <div class="dropdown-menu dropdown-menu-start p-4 rounded-xxl border-0 shadow-lg" th:aria-labelledby="|dropdownMenu${article.id}|">
                                                                             <div class="card-body p-0 d-flex">
                                                                                 <i class="feather-bookmark text-grey-500 me-3 font-lg"></i>

@@ -190,6 +190,8 @@ public class ArticleControler {
     }
 
     @PostMapping(path = "/Articles/Chercher")
+    
+    
     public ModelAndView RechercherArticle(@RequestParam("sujet") String sujet) {
         this.modelAndView.addObject("sujet", sujet);
         List<Article> Resultats = this.articleService.rechercheArticles(sujet);
