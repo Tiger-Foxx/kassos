@@ -30,7 +30,7 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
    public int id;
    public String texte;
-   public String theme;
+   public String theme="aucun";
    public String image;
    public String titre;
 

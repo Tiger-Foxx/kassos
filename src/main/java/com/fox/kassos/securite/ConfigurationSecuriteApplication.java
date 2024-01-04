@@ -25,12 +25,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.RememberMeServices;
+
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
-import static org.springframework.web.server.adapter.WebHttpHandlerBuilder.applicationContext;
+
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 
 /**
@@ -82,7 +79,9 @@ public class ConfigurationSecuriteApplication implements ApplicationContextAware
                 )
                 
                 .sessionManagement(httpSecuritySessionManagementConfigurer
-                        -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                                .sessionFixation().newSession()
+                                .maximumSessions(-1)
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
